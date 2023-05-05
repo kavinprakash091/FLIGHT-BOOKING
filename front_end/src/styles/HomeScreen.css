@@ -1,6 +1,52 @@
 .home-page {
   width: 90%;
+  padding-bottom: 3%;
   margin: 3% auto;
   border-radius: 10px;
   background-color: #ffffff;
+}
+
+.home-slider-container {
+  width: 80%;
+  height: 70vh;
+  margin: 3% auto;
+  border-radius: 10px;
+  background: url('../assets/home_background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.home-search-container {
+  position: absolute;
+  height: 30vh;
+  width: 64%;
+  margin: -8% 0% 0% 13%;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.home-search-container-header {
+  position: absolute;
+  width: 50%;
+  margin-top: -2.5%;
+  list-style: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.home-search-container-header li {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: transparent;
+  cursor: pointer;
+}
+
+.home-search-container-header li a {
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  background: transparent;
 }
