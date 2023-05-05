@@ -99,3 +99,92 @@
   margin-top: 5%;
   font-size: 1.5rem;
 }
+
+.best-route-container {
+  margin-top: 5%;
+}
+
+.check-best-route-container {
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.check-best-route-container h4 {
+  margin-top: 3%;
+  font-weight: 400;
+  color: #b7b7b7;
+  text-align: left;
+  background-color: #ffffff;
+}
+
+.best-route-destination-container {
+  width: 96%;
+  padding: 3%;
+  margin: 2% auto;
+  background-color: #ffffff;
+  border-top: 1px solid #b7b7b7;
+  border-bottom: 1px solid #b7b7b7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.best-route-destination-button {
+  padding: 0.5% 3%;
+  margin-bottom: 2%;
+  font-size: 1rem;
+  border: 1px solid #b7b7b7;
+  border-radius: 25px;
+  color: #b7b7b7;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.best-route-destination-button:hover {
+  background-color: #ffd597;
+  border: 1px solid #000000;
+  color: #000000;
+}
+
+.best-route-card {
+  height: 50vh;
+  border: 1px solid #b7b7b7;
+  background-color: #ffffff;
+}
+
+.best-route-card .best-flight-offer-card-image {
+  height: 70%;
+}
+
+.best-route-detail-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.best-route-detail {
+  width: 50%;
+  margin-top: 4%;
+  background-color: #ffffff;
+}
+
+.best-route-detail h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: #ffffff;
+}
+
+.best-route-detail h4 {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #b7b7b7;
+  background-color: #ffffff;
+}
+
+.best-route-detail h3 i,
+.best-route-detail h4 i {
+  background-color: #ffffff;
+}
