@@ -22,7 +22,7 @@
   width: 64%;
   margin: -8% 0% 0% 13%;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: #ececec;
 }
 
 .home-search-container-header {
@@ -49,4 +49,53 @@
   color: #ffffff;
   text-decoration: none;
   background: transparent;
+}
+
+.best-flight-offer-container {
+  width: 76%;
+  padding: 3%;
+  margin: 15% auto 0% auto;
+  border-radius: 10px;
+  background-color: #ffffff;
+  /* box-shadow: #43475545 0px 0px 0.25em, #5a7dbc0d 0px 0.25em 1em; */
+}
+
+.best-flight-offer-container h1 {
+  border-radius: 10px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  background-color: #ffffff;
+}
+
+.best-flight-offer-card-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #ffffff;
+}
+
+.best-flight-offer-card {
+  height: 50vh;
+  width: 30%;
+  margin-top: 5%;
+  border-radius: 10px;
+}
+
+.best-flight-offer-card-image {
+  height: 60%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.best-flight-offer-card-image > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.best-flight-offer-card h3 {
+  margin-top: 5%;
+  font-size: 1.5rem;
 }
