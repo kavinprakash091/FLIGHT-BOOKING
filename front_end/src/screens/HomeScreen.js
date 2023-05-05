@@ -5,6 +5,7 @@ import HomeSlider from '../components/HomeSlider';
 import HomeSearch from '../components/HomeSearch';
 import BestOffer from '../components/BestOffer';
 import BestRoute from '../components/BestRoute';
+import PopularRoutes from '../components/PopularRoutes';
 
 export default function HomeScreen() {
   return (
@@ -14,6 +15,7 @@ export default function HomeScreen() {
       <HomeSearch />
       <BestOffer />
       <BestRoute />
+      <PopularRoutes />
     </section>
   );
 }
