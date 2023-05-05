@@ -256,3 +256,57 @@
   text-decoration: none;
   background-color: #ffffff;
 }
+
+.flight-newsletter {
+  width: 80%;
+  margin: 2% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.flight-newsletter h3 {
+  width: 50%;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #7b7b7b;
+  text-align: left;
+  background-color: #ffffff;
+}
+
+.flight-newsletter h3 span {
+  font-weight: 600;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.flight-newsletter-form {
+  width: 50%;
+  background-color: #ffffff;
+}
+
+.flight-newsletter-form input {
+  width: 60%;
+  padding: 2%;
+  border: 1px solid #b7b7b7;
+  background-color: #ffffff;
+}
+
+.flight-newsletter-form input:focus {
+  outline: none;
+  border: 1px solid #ffd597;
+}
+
+.newsletter-subscribe-button {
+  padding: 2% 3%;
+  margin-left: 5%;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+}
+
+.newsletter-subscribe-button i {
+  background-color: #000000;
+}
