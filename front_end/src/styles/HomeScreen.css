@@ -244,3 +244,15 @@
   color: #000000;
   background-color: #ffffff;
 }
+
+.best-flight-offer-card-image p {
+  font-weight: 400;
+  color: #7b7b7b;
+  background-color: #ffffff;
+}
+
+.best-route-detail a {
+  color: #ffd597;
+  text-decoration: none;
+  background-color: #ffffff;
+}
