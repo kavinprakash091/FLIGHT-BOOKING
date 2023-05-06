@@ -42,6 +42,7 @@ export default function SignupScreen() {
     if (password === confirmPassword) {
       if (validatePassword(password)) {
         try {
+          dispatch({ type: 'FETCH_REQUEST' });
           const { data } = await Axios.put('/api/users/sign-up', {
             email,
             password,
@@ -49,8 +50,10 @@ export default function SignupScreen() {
           localStorage.setItem('userDetails', JSON.stringify(data));
           ctxDispatch({ type: 'SIGN_UP', payload: data });
           toast.success(data.users.firstname + ' signed up successfully!');
+          dispatch({ type: 'FETCH_SUCCESS' });
           navigate('/');
         } catch (err) {
+          dispatch({ type: 'FETCH_FAILED' });
           toast.error(getError(err));
         }
       } else {

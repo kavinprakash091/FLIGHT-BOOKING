@@ -6,6 +6,9 @@ const initialState = {
   userDetails: localStorage.getItem('userDetails')
     ? JSON.parse(localStorage.getItem('userDetails'))
     : null,
+  airports: localStorage.getItem('airports')
+    ? JSON.parse(localStorage.getItem('airports'))
+    : [],
 };
 
 const reducer = (state, action) => {
@@ -16,6 +19,8 @@ const reducer = (state, action) => {
       return { ...state, userDetails: action.payload };
     case 'SIGN_OUT':
       return { ...state, userDetails: null };
+    case 'ADD_AIRPORT':
+      return { ...state, airports: action.payload };
     default:
       return state;
   }

@@ -16,7 +16,8 @@
   height: 90vh;
   width: 100%;
   z-index: 100;
-  overflow: hidden;
+  overflow: scroll;
+  overflow-x: hidden;
   /* background-color: blue; */
 }
 
