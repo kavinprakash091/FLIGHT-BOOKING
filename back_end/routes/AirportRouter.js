@@ -7,6 +7,7 @@ const airportRouter = express.Router();
 
 airportRouter.get(
   '/',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const airports = await Airport.find({});
     if (!airports) {
@@ -19,6 +20,7 @@ airportRouter.get(
 
 airportRouter.put(
   '/add',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const airport = new Airport({
       code: req.body.airportCode,
@@ -35,6 +37,7 @@ airportRouter.put(
 
 airportRouter.get(
   '/delete/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     await Airport.findOneAndDelete({ _id: req.params.id });
     const airports = await Airport.find({});
@@ -45,6 +48,7 @@ airportRouter.get(
 
 airportRouter.put(
   '/update/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const airport = await Airport.findOneAndUpdate(
       { _id: req.params.id },
