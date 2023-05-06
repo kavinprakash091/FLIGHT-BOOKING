@@ -43,6 +43,7 @@ export default function SignupScreen() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Atleast 8 characters, 1 special, 1 digit, 1 uppercase"
               required
             />
           </div>

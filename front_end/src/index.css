@@ -4,6 +4,9 @@
   box-sizing: content-box;
   font-family: 'Roboto', sans-serif;
   scroll-behavior: smooth;
+}
+
+body {
   background-color: #ffd597;
 }
 
