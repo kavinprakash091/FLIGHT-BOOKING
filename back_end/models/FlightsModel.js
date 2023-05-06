@@ -11,11 +11,14 @@ const flightSchema = new mongoose.Schema({
       departureTime: { type: Date, required: true },
       arraivalAirport: { type: String, required: true },
       arrivalTime: { type: String, required: true },
-      seats: {
-        class: { type: String, required: true },
-        countSeats: { type: Number, required: true },
-        fare: { type: Number, required: true },
-      },
+      seats: [
+        {
+          class: { type: String, required: true },
+          countSeats: { type: Number, required: true },
+          fare: { type: Number, required: true },
+        },
+      ],
+      status: { type: String, required: true },
     },
   ],
   image: { type: String },
