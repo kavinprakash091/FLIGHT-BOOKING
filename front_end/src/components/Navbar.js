@@ -21,6 +21,9 @@ export default function Navbar() {
 
       <div className="navbar-items">
         <Link to="/">Home</Link>
+        {userDetails && userDetails.users.userType !== 'customer' && (
+          <Link to="/dashboard">Dashboard</Link>
+        )}
         <Link to="/users/bookings">Bookings</Link>
         <Link to="/users/activities">Activities</Link>
         <i className="fa-solid fa-magnifying-glass"></i>

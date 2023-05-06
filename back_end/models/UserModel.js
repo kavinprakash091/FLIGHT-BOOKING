@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   country: { type: String, default: null },
   postal: { type: String, default: null },
   userType: { type: String, default: 'customer' },
+  organization: { type: String, default: null },
 });
 
 const User = mongoose.model('User', userSchema);

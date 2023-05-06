@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreen';
 import SigninScreen from './screens/SigninScreen';
 import SignupScreen from './screens/SignupScreen';
+import DashboardScreen from './screens/DashboardScreen';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/signin" element={<SigninScreen />} />
         <Route path="/signup" element={<SignupScreen />} />
+        <Route path="/dashboard" element={<DashboardScreen />} />
       </Routes>
     </div>
   );
