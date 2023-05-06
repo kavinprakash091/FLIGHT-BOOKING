@@ -33,4 +33,33 @@ airportRouter.put(
   })
 );
 
+airportRouter.get(
+  '/delete/:id',
+  expressAsyncHandler(async (req, res) => {
+    await Airport.findOneAndDelete({ _id: req.params.id });
+    const airports = await Airport.find({});
+    res.send(airports);
+    return;
+  })
+);
+
+airportRouter.put(
+  '/update/:id',
+  expressAsyncHandler(async (req, res) => {
+    const airport = await Airport.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        code: req.body.airportCode,
+        name: req.body.airportName,
+        location: req.body.airportLocation,
+      },
+      { new: true }
+    );
+
+    const airports = await Airport.find({});
+    res.send(airports);
+    return;
+  })
+);
+
 export default airportRouter;

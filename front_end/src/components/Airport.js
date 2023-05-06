@@ -23,7 +23,9 @@ export default function Airport() {
 
   const [{ loading }, dispatch] = useReducer(reducer, { loading: false });
 
+  const [isUpdate, setUpdate] = useState(false);
   const [isFormOpen, setFormOpen] = useState(false);
+  const [airportId, setAirportId] = useState('');
   const [airportCode, setAirportCode] = useState('');
   const [airportName, setAirportName] = useState('');
   const [airportLocation, setAirportLoctaion] = useState('');
@@ -49,6 +51,7 @@ export default function Airport() {
 
   const addAirportHandler = async (e) => {
     e.preventDefault();
+    setFormOpen(false);
     try {
       dispatch({ type: 'FETCH_REQUEST' });
       const { data } = await Axios.put(
@@ -72,12 +75,64 @@ export default function Airport() {
     }
   };
 
-  const updateAirport = (airport) => {
-    console.log(airport);
+  const updateAirportHandler = async (e) => {
+    e.preventDefault();
+    setFormOpen(false);
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await Axios.put(
+        `/api/airport/update/${airportId}`,
+        {
+          airportCode,
+          airportName,
+          airportLocation,
+        },
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+      localStorage.setItem('airports', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_AIRPORT', payload: data });
+      toast.success(airportName + ' updated successfully!');
+      dispatch({ type: 'FETCH_SUCCESS' });
+      setAirportCode('');
+      setAirportName('');
+      setAirportLoctaion('');
+      setUpdate(false);
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
   };
 
-  const deleteAirport = (airport) => {
-    console.log(airport);
+  const updateAirport = (
+    airport,
+    airportCode,
+    airportName,
+    airportLocation
+  ) => {
+    setUpdate(true);
+    setFormOpen(true);
+    setAirportId(airport);
+    setAirportCode(airportCode);
+    setAirportName(airportName);
+    setAirportLoctaion(airportLocation);
+  };
+
+  const deleteAirport = async (airport, airportName) => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await Axios.get(`/api/airport/delete/${airport}`, {
+        headers: { authorization: `Bearer ${userDetails.token}` },
+      });
+      localStorage.setItem('airports', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_AIRPORT', payload: data });
+      toast.success(airportName + ' removed successfully!');
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
   };
 
   return (
@@ -105,13 +160,20 @@ export default function Airport() {
               </div>
               <div className="airport-card-button-container">
                 <button
-                  onClick={() => updateAirport(airport._id)}
+                  onClick={() =>
+                    updateAirport(
+                      airport._id,
+                      airport.code,
+                      airport.name,
+                      airport.location
+                    )
+                  }
                   className="airport-card-edit-button"
                 >
                   EDIT
                 </button>
                 <button
-                  onClick={() => deleteAirport(airport._id)}
+                  onClick={() => deleteAirport(airport._id, airport.name)}
                   className="airport-card-delete-button"
                 >
                   DELETE
@@ -126,12 +188,17 @@ export default function Airport() {
             ? 'add-airport-form active-add-airport-form'
             : 'add-airport-form'
         }
-        onSubmit={addAirportHandler}
+        onSubmit={isUpdate ? updateAirportHandler : addAirportHandler}
       >
         <div className="add-airport-form-header">
           <h3>ADD AIRPORT</h3>
           <i
-            onClick={() => setFormOpen(false)}
+            onClick={() => {
+              setFormOpen(false);
+              setAirportCode('');
+              setAirportName('');
+              setAirportLoctaion('');
+            }}
             className="fa-solid fa-xmark"
           ></i>
         </div>
@@ -176,7 +243,7 @@ export default function Airport() {
             CANCEL
           </button>
           <button type="submit" className="airport-add-button">
-            ADD
+            {isUpdate ? 'SAVE' : 'ADD'}
           </button>
         </div>
       </form>
