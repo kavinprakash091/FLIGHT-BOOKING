@@ -9,10 +9,22 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const validatePassword = (text) => {
+    return text.match(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/
+    );
+  };
+
   const signupHandler = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      alert(email + ' ' + password + ' ' + confirmPassword);
+      if (validatePassword(password)) {
+        alert(email + ' ' + password + ' ' + confirmPassword);
+      } else {
+        toast.error(
+          'Password should contain atleast 8 - 15 characters, 1 special character, 1 digit and 1 uppercase!'
+        );
+      }
     } else {
       toast.error('Password mismatch!');
     }
