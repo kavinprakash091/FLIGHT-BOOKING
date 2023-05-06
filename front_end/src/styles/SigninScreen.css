@@ -60,6 +60,10 @@
   color: #b7b7b7;
 }
 
+.signin-form .input-fields input[type='checkbox'] {
+  cursor: pointer;
+}
+
 .signup-form .input-fields:nth-child(3) label {
   margin-left: -0.5%;
   font-size: 1.1rem;

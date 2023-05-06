@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRouter from './routes/UserRouter.js';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/users', userRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

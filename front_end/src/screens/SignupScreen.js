@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/SigninScreen.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Axios from 'axios';
 
 export default function SignupScreen() {
   const [isPasswordShow, setPasswordShow] = useState(false);
@@ -15,11 +16,19 @@ export default function SignupScreen() {
     );
   };
 
-  const signupHandler = (e) => {
+  const signupHandler = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       if (validatePassword(password)) {
-        alert(email + ' ' + password + ' ' + confirmPassword);
+        try {
+          const { data } = await Axios.put('/api/users/sign-up', {
+            email,
+            password,
+          });
+          console.log(data);
+        } catch (err) {
+          toast.error();
+        }
       } else {
         toast.error(
           'Password should contain atleast 8 - 15 characters, 1 special character, 1 digit and 1 uppercase!'
@@ -29,6 +38,7 @@ export default function SignupScreen() {
       toast.error('Password mismatch!');
     }
   };
+
   return (
     <section className="signin-page">
       <div className="signin-container signup-container">

@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 
 const userRouter = express.Router();
 
-userRouter.post(
+userRouter.put(
   '/sign-up',
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
