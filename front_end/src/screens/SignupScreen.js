@@ -1,10 +1,31 @@
-import React, { useState } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 import '../styles/SigninScreen.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
+import { getError } from '../Utils';
+import { Store } from '../Store';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false };
+    case 'FETCH_FAILED':
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 
 export default function SignupScreen() {
+  const navigate = useNavigate();
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+
+  const [{ loading }, dispatch] = useReducer(reducer, { loading: false });
+
   const [isPasswordShow, setPasswordShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,9 +46,12 @@ export default function SignupScreen() {
             email,
             password,
           });
-          console.log(data);
+          localStorage.setItem('userDetails', JSON.stringify(data));
+          ctxDispatch({ type: 'SIGN_UP', payload: data });
+          toast.success(data.users.firstname + ' signed up successfully!');
+          navigate('/');
         } catch (err) {
-          toast.error();
+          toast.error(getError(err));
         }
       } else {
         toast.error(

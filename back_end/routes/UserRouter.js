@@ -14,7 +14,12 @@ userRouter.put(
       res.status(404).send({ message: 'Email already exists!' });
       return;
     }
+
+    const nameArray = req.body.email.split('@');
+    const firstname = nameArray[0];
+
     const userSignup = new User({
+      firstname: firstname,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password),
     });
