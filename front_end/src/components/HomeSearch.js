@@ -5,18 +5,23 @@ import { Link } from 'react-router-dom';
 export default function HomeSearch() {
   const [isActiveNav, setActiveNav] = useState(1);
   return (
-    <section className="home-search-container">
-      <ul className="home-search-container-header">
-        <li className={isActiveNav === 1 && 'active-home-search-header'}>
-          ONE WAY
-        </li>
-        <li className={isActiveNav === 2 && 'active-home-search-header'}>
-          ROUND TRIP
-        </li>
-        <li className={isActiveNav === 3 && 'active-home-search-header'}>
-          <Link to="#explore">EXPLORE</Link>
-        </li>
-      </ul>
+    <section className="booking-search-container home-search">
+      <form className="booking-search-form">
+        <div className="input-fields">
+          <label htmlFor="departureAirport">Departure Airport</label>
+          <input type="text" id="departureAirport" />
+        </div>
+        <i className="fa-solid fa-right-left"></i>
+        <div className="input-fields">
+          <label htmlFor="arrivalAirport">Arrival Airport</label>
+          <input type="text" id="arrivalAirport" />
+        </div>
+        <div className="input-fields">
+          <label htmlFor="departureAirport">Departure Time</label>
+          <input type="date" id="departureTimet" />
+        </div>
+        <button className="booking-search-button">SEARCH</button>
+      </form>
     </section>
   );
 }

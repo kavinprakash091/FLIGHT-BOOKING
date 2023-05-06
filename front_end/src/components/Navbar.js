@@ -24,8 +24,8 @@ export default function Navbar() {
         {userDetails && userDetails.users.userType !== 'customer' && (
           <Link to="/dashboard">Dashboard</Link>
         )}
-        <Link to="/users/bookings">Bookings</Link>
-        <Link to="/users/activities">Activities</Link>
+        <Link to="/bookings">Bookings</Link>
+        <Link to="/activities">Activities</Link>
         <i className="fa-solid fa-magnifying-glass"></i>
       </div>
 
