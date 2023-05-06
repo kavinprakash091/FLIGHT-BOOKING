@@ -13,11 +13,12 @@
 
 .airport-container {
   position: relative;
-  height: 90vh;
+  height: 100vh;
   width: 100%;
   z-index: 100;
   overflow: scroll;
   overflow-x: hidden;
+  border-bottom: 1px solid #8d8d8d;
   /* background-color: blue; */
 }
 
@@ -27,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #8d8d8d;
+  box-shadow: #32325d40 0px 6px 12px -2px, #0000004d 0px 3px 7px -3px;
 }
 
 .admin-add-button {
@@ -43,6 +44,8 @@
 
 .add-airport-form {
   position: absolute;
+  max-height: 60vh;
+  overflow: scroll;
   width: 50%;
   padding-bottom: 1%;
   margin: 2% 25%;
@@ -79,7 +82,8 @@
   margin-left: 5%;
 }
 
-.add-airport-form .input-fields input {
+.add-airport-form .input-fields input,
+.add-airport-form .input-fields select {
   height: 2rem;
   width: 90%;
   padding-left: 2%;
@@ -91,7 +95,8 @@
   font-weight: 500;
 }
 
-.add-airport-form .input-fields input:focus {
+.add-airport-form .input-fields input:focus,
+.add-airport-form .input-fields select:focus {
   height: 2.3rem;
   outline: none;
   border: 1px solid #8d8d8d;
@@ -201,4 +206,89 @@
 
 .airport-card-delete-button {
   background-color: #ff0000;
+}
+
+.airlines-list-container {
+  width: 96%;
+  height: 25vh;
+  overflow: hidden;
+  box-shadow: #3c40434d 0px 1px 2px 0px, #3c404326 0px 2px 6px 2px;
+  border-radius: 5px;
+}
+
+.big-airlines-list-container {
+  height: auto;
+}
+
+.airlines-list-container-header {
+  width: 100%;
+  margin: 3% auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rem;
+}
+
+.airlines-image-container {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.airlines-image-container p {
+  color: #8d8d8d;
+}
+
+.airlines-image {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+}
+
+.airlines-image > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.airport-container h5 {
+  margin-top: -5%;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #00b97f;
+  cursor: pointer;
+}
+
+.flights-list-container {
+  width: 96%;
+  margin: 7% auto;
+}
+
+.flights-list-card {
+  width: 96%;
+  height: 25vh;
+  padding: 2%;
+  overflow: hidden;
+  box-shadow: #3c40434d 0px 1px 2px 0px, #3c404326 0px 2px 6px 2px;
+  border-radius: 5px;
+}
+
+.big-flights-list-card {
+  height: auto;
+}
+
+.flights-list-card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18rem;
+}
+
+.flights-schedule-list-container {
+  width: 90%;
+  margin: 13% auto;
 }

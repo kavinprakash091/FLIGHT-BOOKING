@@ -7,18 +7,19 @@ const flightSchema = new mongoose.Schema({
   category: { type: String, required: true },
   schedules: [
     {
-      departureAirport: { type: String, required: true },
-      departureTime: { type: Date, required: true },
-      arraivalAirport: { type: String, required: true },
-      arrivalTime: { type: String, required: true },
+      departureAirport: { type: String },
+      departureTime: { type: Date },
+      arraivalAirport: { type: String },
+      arrivalTime: { type: String },
       seats: [
         {
-          class: { type: String, required: true },
-          countSeats: { type: Number, required: true },
-          fare: { type: Number, required: true },
+          class: { type: String },
+          countSeats: { type: Number },
+          fare: { type: Number },
         },
       ],
-      status: { type: String, required: true },
+      status: { type: String },
+      date: { type: String },
     },
   ],
   image: { type: String },
@@ -26,4 +27,4 @@ const flightSchema = new mongoose.Schema({
 
 const Flight = mongoose.model('Flight', flightSchema);
 
-export default Airport;
+export default Flight;

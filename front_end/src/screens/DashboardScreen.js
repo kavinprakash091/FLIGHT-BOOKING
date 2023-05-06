@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/DashboardScreen.css';
 import Navbar from '../components/Navbar';
 import Airport from '../components/Airport';
+import Airlines from '../components/Airlines';
 
 export default function DashboardScreen() {
   return (
@@ -9,6 +10,7 @@ export default function DashboardScreen() {
       <Navbar />
       <div className="dashboard-detail-container">
         <Airport />
+        <Airlines />
       </div>
     </section>
   );
