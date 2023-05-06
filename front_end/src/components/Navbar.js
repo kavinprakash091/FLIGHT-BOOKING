@@ -16,7 +16,7 @@ export default function Navbar() {
       </div>
 
       <div className="user-profile-container">
-        <Link to="/login">Log in</Link>
+        <Link to="/signin">Log in</Link>
         <Link to="/signup">Sign up</Link>
       </div>
     </nav>

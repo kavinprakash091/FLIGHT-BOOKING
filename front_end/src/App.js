@@ -1,11 +1,20 @@
-import { Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import HomeScreen from './screens/HomeScreen';
+import SigninScreen from './screens/SigninScreen';
+import SignupScreen from './screens/SignupScreen';
 
 function App() {
   return (
     <div className="App">
-      <HomeScreen />
+      <ToastContainer position="top-right" limit={1} />
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/signin" element={<SigninScreen />} />
+        <Route path="/signup" element={<SignupScreen />} />
+      </Routes>
     </div>
   );
 }
