@@ -7,6 +7,7 @@ import { getDate, getError } from '../Utils';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import ScheduleCard from '../components/ScheduleCard';
+import Loading from '../components/Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -94,6 +95,7 @@ export default function ActivityScreen() {
 
   return (
     <section className="activity-page">
+      {loading && <Loading />}
       <Navbar />
       <div className="activity-list-container">
         {activities &&

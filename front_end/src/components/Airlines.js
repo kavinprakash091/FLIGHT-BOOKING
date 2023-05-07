@@ -5,6 +5,7 @@ import { getError } from '../Utils';
 import { toast } from 'react-toastify';
 import { Link, useParams } from 'react-router-dom';
 import Flights from './Flights';
+import Loading from './Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -155,6 +156,7 @@ export default function Airlines() {
 
   return (
     <section className="airport-container">
+      {loading && <Loading />}
       <div className="airport-container-header">
         <h3>AIRLINES</h3>
         <button onClick={() => setFormOpen(1)} className="admin-add-button">

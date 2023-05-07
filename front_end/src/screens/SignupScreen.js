@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Axios from 'axios';
 import { getError } from '../Utils';
 import { Store } from '../Store';
+import Loading from '../components/Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -68,6 +69,7 @@ export default function SignupScreen() {
 
   return (
     <section className="signin-page">
+      {loading && <Loading />}
       <div className="signin-container signup-container">
         <div className="signin-container-header">Sign Up</div>
         <form className="signin-form signup-form" onSubmit={signupHandler}>

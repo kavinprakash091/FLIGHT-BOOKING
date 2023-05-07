@@ -5,6 +5,7 @@ import Axios from 'axios';
 import { getError } from '../Utils';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
+import Loading from './Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -86,6 +87,7 @@ export default function HomeSearch() {
 
   return (
     <section className="booking-search-container">
+      {loading && <Loading />}
       <form className="booking-search-form" onSubmit={searchHandler}>
         <div className="input-fields">
           <label htmlFor="departureAirport">Departure Airport</label>

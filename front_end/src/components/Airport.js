@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { getError } from '../Utils';
 import Axios from 'axios';
 import { Store } from '../Store';
+import Loading from './Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -142,6 +143,7 @@ export default function Airport() {
 
   return (
     <section className="airport-container">
+      {loading && <Loading />}
       <div className="airport-container-header">
         <h3>AIRPORTS</h3>
         <button onClick={() => setFormOpen(true)} className="admin-add-button">

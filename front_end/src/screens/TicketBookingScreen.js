@@ -7,6 +7,7 @@ import { getDate, getError } from '../Utils';
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -134,6 +135,7 @@ export default function TicketBookingScreen() {
 
   return (
     <section className="ticket-booking-page">
+      {loading && <Loading />}
       <Navbar />
       <ProgressIndicator progress={progress} />
       <div className="ticket-booking-container">

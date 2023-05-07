@@ -4,6 +4,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getDate, getError } from '../Utils';
 import Axios from 'axios';
+import Loading from './Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -137,6 +138,7 @@ export default function Flights({ airline }) {
 
   return (
     <section className="flight-list-container">
+      {loading && <Loading />}
       {flights &&
         flights.map(
           (flight, index) =>

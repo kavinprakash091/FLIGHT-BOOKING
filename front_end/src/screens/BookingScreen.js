@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import ScheduleCard from '../components/ScheduleCard';
+import Loading from '../components/Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -67,6 +68,7 @@ export default function BookingScreen() {
 
   return (
     <section className="booking-page">
+      {loading && <Loading />}
       <Navbar />
       <HomeSearch />
 
