@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function HomeSearch() {
   const [isActiveNav, setActiveNav] = useState(1);
   return (
-    <section className="booking-search-container home-search">
+    <section className="booking-search-container">
       <form className="booking-search-form">
         <div className="input-fields">
           <label htmlFor="departureAirport">Departure Airport</label>

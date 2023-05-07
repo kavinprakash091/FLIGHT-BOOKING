@@ -19,6 +19,18 @@ flightRouter.get(
   })
 );
 
+flightRouter.get(
+  '/fetch',
+  expressAsyncHandler(async (req, res) => {
+    const flights = await Flight.find({});
+    if (!flights) {
+      res.status(404).send({ message: 'No flights found!' });
+    }
+    res.send(flights);
+    return;
+  })
+);
+
 flightRouter.put(
   '/add/:id',
   isAuth,

@@ -14,7 +14,9 @@ export default function HomeScreen() {
     <section className="home-page">
       <Navbar />
       <HomeSlider />
-      <HomeSearch />
+      <div className="home-search">
+        <HomeSearch />
+      </div>
       <BestOffer />
       <BestRoute />
       <PopularRoutes />
