@@ -7,6 +7,7 @@ import airlinesRouter from './routes/AirlinesRouter.js';
 import flightRouter from './routes/FlightRouter.js';
 import searchRouter from './routes/SearchRouter.js';
 import scheduleRouter from './routes/ScheduleRouter.js';
+import bookingRouter from './routes/BookingRouter.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/airlines', airlinesRouter);
 app.use('/api/flights', flightRouter);
 app.use('/api/schedules', scheduleRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/booking', bookingRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

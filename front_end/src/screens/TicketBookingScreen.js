@@ -3,8 +3,10 @@ import '../styles/TicketBookingScreen.css';
 import Navbar from '../components/Navbar';
 import ProgressIndicator from '../components/ProgressIndicator';
 import { Store } from '../Store';
-import { getDate } from '../Utils';
+import { getDate, getError } from '../Utils';
 import { useParams } from 'react-router-dom';
+import Axios from 'axios';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +30,9 @@ export default function TicketBookingScreen() {
   const params = useParams();
   const { schedule: scheduleId } = params;
 
+  const [progress, setProgress] = useState(1);
+
+  const [classType, setClassType] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
@@ -57,14 +62,75 @@ export default function TicketBookingScreen() {
 
   findFlight();
 
-  const bookTicketHandler = (e) => {
+  const bookTicketHandler = async (e) => {
     e.preventDefault();
+    const flightId = flight._id;
+    const classno = classType === 'Economy' ? 0 : 1;
+    const newValue = schedule.seats[classno].countSeats - 1;
+    const seatno = schedule.seats[classno].countSeats - newValue;
+    if (newValue < 0) {
+      toast.error(classType + ' no seats available!');
+    }
+    const seats = [
+      {
+        class: 'Economy',
+        countSeats: Number(schedule.seats[0].countSeats),
+        fare: Number(schedule.seats[0].fare),
+      },
+      {
+        class: 'Business',
+        countSeats: Number(schedule.seats[1].countSeats),
+        fare: Number(schedule.seats[1].fare),
+      },
+    ];
+    seats[classno].countSeats = newValue;
+    try {
+      const { data } = await Axios.put(
+        `/api/schedules/seat/${scheduleId}`,
+        {
+          seats,
+        },
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+      localStorage.setItem('schedules', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_SCHEDULES', payload: data });
+      try {
+        const { data } = await Axios.put(
+          `/api/booking/add/${userDetails.users._id}`,
+          {
+            lastName,
+            firstName,
+            phone,
+            age,
+            gender,
+            nationality,
+            classType,
+            seatno,
+            flightId,
+            scheduleId,
+          },
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        );
+        toast.success(
+          'You have successfully booked the ' + classType + ' ticket!'
+        );
+        setProgress(2);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    } catch (err) {
+      toast.error(getError(err));
+    }
   };
 
   return (
     <section className="ticket-booking-page">
       <Navbar />
-      <ProgressIndicator progress={1} />
+      <ProgressIndicator progress={progress} />
       <div className="ticket-booking-container">
         <div className="ticket-booking-container-header">
           <div className="ticket-booking-flight-image">
@@ -141,6 +207,21 @@ export default function TicketBookingScreen() {
         <form className="travel-details-form" onSubmit={bookTicketHandler}>
           <div className="travel-details-form-header">
             Fill the passenger's informations correctly!
+          </div>
+          <div className="input-fields">
+            <label htmlFor="classType">
+              Class Type<span>*</span>
+            </label>
+            <select
+              id="classType"
+              value={classType}
+              onChange={(e) => setClassType(e.target.value)}
+              required
+            >
+              <option></option>
+              <option value="Economy">Economy</option>
+              <option value="Business">Business</option>
+            </select>
           </div>
           <div className="input-fields">
             <label htmlFor="firstName">
