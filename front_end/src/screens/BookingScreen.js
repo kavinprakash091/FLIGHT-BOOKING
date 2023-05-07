@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import ScheduleCard from '../components/ScheduleCard';
 import Loading from '../components/Loading';
+import NoDocumentsFound from '../components/NoDocumentsFound';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -73,10 +74,20 @@ export default function BookingScreen() {
       <HomeSearch />
 
       <div className="flight-booking-card-container">
-        {schedulesList &&
+        {search.isSearched ? (
+          search.searchSchedules ? (
+            search.searchSchedules.map((schedule) => (
+              <ScheduleCard schedule={schedule} key={schedule._id} />
+            ))
+          ) : (
+            <div>Hi</div>
+          )
+        ) : (
+          schedulesList &&
           schedulesList.map((schedule) => (
             <ScheduleCard schedule={schedule} key={schedule._id} />
-          ))}
+          ))
+        )}
       </div>
     </section>
   );

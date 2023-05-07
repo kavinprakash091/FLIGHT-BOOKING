@@ -53,30 +53,12 @@ export default function HomeSearch() {
     e.preventDefault();
     try {
       dispatch({ type: 'FETCH_REQUEST' });
-      if (
-        departureAirport !== '' &&
-        arrivalAirport === '' &&
-        searchDate === ''
-      ) {
-        const data = await Axios.get(
-          `/api/search/departure/${departureAirport}`
-        );
-        ctxDispatch({ type: 'SEARCH', payload: data });
-      } else if (
-        arrivalAirport !== '' &&
-        departureAirport === '' &&
-        searchDate === ''
-      ) {
-        const data = await Axios.get(`/api/search/arrival/${arrivalAirport}`);
-        ctxDispatch({ type: 'SEARCH', payload: data });
-      } else if (
-        searchDate !== '' &&
-        departureAirport === '' &&
-        arrivalAirport === ''
-      ) {
-        const data = await Axios.get(`/api/search/date/${searchDate}`);
-        ctxDispatch({ type: 'SEARCH', payload: data });
-      }
+      const { data } = await Axios.post(`/api/search/`, {
+        departureAirport,
+        arrivalAirport,
+        searchDate,
+      });
+      ctxDispatch({ type: 'SEARCH', payload: data });
       dispatch({ type: 'FETCH_SUCCESS' });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILED' });
@@ -87,7 +69,11 @@ export default function HomeSearch() {
 
   return (
     <section className="booking-search-container">
-      {loading && <Loading />}
+      {loading && (
+        <div className="home-search-loading">
+          <Loading />
+        </div>
+      )}
       <form className="booking-search-form" onSubmit={searchHandler}>
         <div className="input-fields">
           <label htmlFor="departureAirport">Departure Airport</label>

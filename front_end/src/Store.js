@@ -31,7 +31,15 @@ const reducer = (state, action) => {
     case 'SIGN_IN':
       return { ...state, userDetails: action.payload };
     case 'SIGN_OUT':
-      return { ...state, userDetails: null };
+      return {
+        ...state,
+        userDetails: null,
+        airports: [],
+        airlines: [],
+        flights: [],
+        schedules: [],
+        activities: [],
+      };
     case 'ADD_AIRPORT':
       return { ...state, airports: action.payload };
     case 'ADD_AIRLINES':

@@ -1,15 +1,23 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userDetails } = state;
 
   const signoutHandler = () => {
     localStorage.removeItem('userDetails');
+    localStorage.removeItem('airports');
+    localStorage.removeItem('airlines');
+    localStorage.removeItem('flights');
+    localStorage.removeItem('schedules');
+    localStorage.removeItem('activities');
     ctxDispatch({ type: 'SIGN_OUT' });
+    navigate('/');
     toast.success(userDetails.users.firstname + ' signed out successfully!');
   };
 
