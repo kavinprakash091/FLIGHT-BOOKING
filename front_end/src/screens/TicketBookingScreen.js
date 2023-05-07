@@ -67,7 +67,7 @@ export default function TicketBookingScreen() {
     const flightId = flight._id;
     const classno = classType === 'Economy' ? 0 : 1;
     const newValue = schedule.seats[classno].countSeats - 1;
-    const seatno = schedule.seats[classno].countSeats - newValue;
+    const seatno = (classno === 0 ? 40 : 20) - newValue;
     if (newValue < 0) {
       toast.error(classType + ' no seats available!');
     }
@@ -85,6 +85,7 @@ export default function TicketBookingScreen() {
     ];
     seats[classno].countSeats = newValue;
     try {
+      dispatch({ type: 'FETCH_REQUEST' });
       const { data } = await Axios.put(
         `/api/schedules/seat/${scheduleId}`,
         {
@@ -118,11 +119,15 @@ export default function TicketBookingScreen() {
         toast.success(
           'You have successfully booked the ' + classType + ' ticket!'
         );
+        window.scrollTo(0, 0);
         setProgress(2);
+        dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
+        dispatch({ type: 'FETCH_FAILED' });
         toast.error(getError(err));
       }
     } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
       toast.error(getError(err));
     }
   };

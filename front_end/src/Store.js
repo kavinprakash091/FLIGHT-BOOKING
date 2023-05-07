@@ -18,6 +18,9 @@ const initialState = {
   schedules: localStorage.getItem('schedules')
     ? JSON.parse(localStorage.getItem('schedules'))
     : [],
+  activities: localStorage.getItem('activities')
+    ? JSON.parse(localStorage.getItem('activities'))
+    : [],
   search: { isSearched: false, searchSchedules: [] },
 };
 
@@ -37,6 +40,8 @@ const reducer = (state, action) => {
       return { ...state, flights: action.payload };
     case 'ADD_SCHEDULES':
       return { ...state, schedules: action.payload };
+    case 'ADD_ACTIVITIES':
+      return { ...state, activities: action.payload };
     case 'SEARCH':
       return {
         ...state,

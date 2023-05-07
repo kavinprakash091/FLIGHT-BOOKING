@@ -8,12 +8,26 @@ import Booking from '../models/BookingModel.js';
 const bookingRouter = express.Router();
 
 bookingRouter.get(
-  '/',
+  '/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const bookings = await Booking.find({});
+    const bookings = await Booking.find({ userId: req.params.id });
     if (!bookings) {
-      res.status(404).send({ message: 'No flights found!' });
+      res.status(404).send({ message: 'No bookings found!' });
+    }
+    res.send(bookings);
+    return;
+  })
+);
+
+bookingRouter.put(
+  '/delete/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    await Booking.findOneAndDelete({ _id: req.params.id });
+    const bookings = await Booking.find({ userId: req.params.id });
+    if (!bookings) {
+      res.status(404).send({ message: 'No bookings found!' });
     }
     res.send(bookings);
     return;
