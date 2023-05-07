@@ -175,7 +175,25 @@ export default function Flights({ airline }) {
                           </div>
                         ))}
                       </div>
-                      <button className="flight-book-button">BOOK</button>
+                      <div className="schedule-button-container">
+                        <Link
+                          to={`/dashboard/${flight._id}`}
+                          onClick={() => {
+                            setFormOpen(true);
+                            setFlightId(flight._id);
+                          }}
+                          className="admin-add-button airport-card-edit-button"
+                        >
+                          EDIT
+                        </Link>
+                        <Link
+                          to={`/dashboard/${flight._id}`}
+                          // onClick={() => deleteAirline(airline.name, airline._id)}
+                          className="admin-add-button airport-card-delete-button"
+                        >
+                          DELETE
+                        </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

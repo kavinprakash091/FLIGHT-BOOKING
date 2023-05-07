@@ -322,7 +322,17 @@
 }
 
 .flight-booking-card-image p {
+  margin-top: -10%;
   padding-bottom: 5%;
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: #8d8d8d;
+}
+
+.schedule-button-container {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-direction: column;
 }
