@@ -12,6 +12,9 @@ const initialState = {
   airlines: localStorage.getItem('airlines')
     ? JSON.parse(localStorage.getItem('airlines'))
     : [],
+  flights: localStorage.getItem('flights')
+    ? JSON.parse(localStorage.getItem('flights'))
+    : [],
 };
 
 const reducer = (state, action) => {
@@ -26,6 +29,8 @@ const reducer = (state, action) => {
       return { ...state, airports: action.payload };
     case 'ADD_AIRLINES':
       return { ...state, airlines: action.payload };
+    case 'ADD_FLIGHTS':
+      return { ...state, flights: action.payload };
     default:
       return state;
   }

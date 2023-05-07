@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/UserRouter.js';
 import airportRouter from './routes/AirportRouter.js';
 import airlinesRouter from './routes/AirlinesRouter.js';
+import flightRouter from './routes/FlightRouter.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRouter);
 app.use('/api/airport', airportRouter);
 app.use('/api/airlines', airlinesRouter);
+app.use('/api/flights', flightRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

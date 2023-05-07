@@ -17,6 +17,7 @@ function App() {
         <Route path="/signin" element={<SigninScreen />} />
         <Route path="/signup" element={<SignupScreen />} />
         <Route path="/dashboard" element={<DashboardScreen />} />
+        <Route path="/dashboard/:airline" element={<DashboardScreen />} />
         <Route path="/bookings" element={<BookingScreen />} />
       </Routes>
     </div>

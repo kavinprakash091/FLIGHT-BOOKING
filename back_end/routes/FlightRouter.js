@@ -1,50 +1,62 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../Utils.js';
+import Flight from '../models/FlightsModel.js';
 import Airlines from '../models/AirlinesModel.js';
 
-const airlinesRouter = express.Router();
+const flightRouter = express.Router();
 
-airlinesRouter.get(
+flightRouter.get(
   '/',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const airlines = await Airlines.find({});
+    const airlines = await Flight.find({});
     if (!airlines) {
-      res.status(404).send({ message: 'No airlines found!' });
+      res.status(404).send({ message: 'No flights found!' });
     }
     res.send(airlines);
     return;
   })
 );
 
-airlinesRouter.put(
-  '/add',
+flightRouter.put(
+  '/add/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const airline = new Airlines({
-      name: req.body.airlinesName,
-    });
-    await airline.save();
+    await Airlines.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        flights: req.body.flights,
+      },
+      { new: true }
+    );
 
-    const airlines = await Airlines.find({});
-    res.send(airlines);
+    const flight = new Flight({
+      airlineId: req.params.id,
+      number: req.body.flightNumber,
+      name: req.body.flightName,
+      category: req.body.flightCategory,
+    });
+    await flight.save();
+
+    const flights = await Flight.find({});
+    res.send(flights);
     return;
   })
 );
 
-airlinesRouter.get(
+flightRouter.get(
   '/delete/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    await Airlines.findOneAndDelete({ _id: req.params.id });
-    const airlines = await Airlines.find({});
+    await Flight.findOneAndDelete({ _id: req.params.id });
+    const airlines = await Flight.find({});
     res.send(airlines);
     return;
   })
 );
 
-// airlinesRouter.put(
+// flightRouter.put(
 //   '/update/:id',
 //   expressAsyncHandler(async (req, res) => {
 //     const airport = await Airport.findOneAndUpdate(
@@ -63,4 +75,4 @@ airlinesRouter.get(
 //   })
 // );
 
-export default airlinesRouter;
+export default flightRouter;
