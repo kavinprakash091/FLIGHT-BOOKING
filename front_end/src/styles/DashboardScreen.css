@@ -316,3 +316,13 @@
   padding-top: 7%;
   margin: 5% auto;
 }
+
+.add-schedule-form {
+  margin: -50% 25% 5% 25%;
+}
+
+.flight-booking-card-image p {
+  padding-bottom: 5%;
+  font-size: 1rem;
+  color: #8d8d8d;
+}

@@ -8,8 +8,8 @@ const flightSchema = new mongoose.Schema({
   schedules: [
     {
       departureAirport: { type: String },
-      departureTime: { type: Date },
-      arraivalAirport: { type: String },
+      departureTime: { type: String },
+      arrivalAirport: { type: String },
       arrivalTime: { type: String },
       seats: [
         {
@@ -19,7 +19,7 @@ const flightSchema = new mongoose.Schema({
         },
       ],
       status: { type: String },
-      date: { type: String },
+      date: { type: Date },
     },
   ],
   image: { type: String },

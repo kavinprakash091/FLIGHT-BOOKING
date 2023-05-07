@@ -106,7 +106,7 @@ export default function Airlines() {
       });
       localStorage.setItem('airlines', JSON.stringify(data));
       ctxDispatch({ type: 'ADD_AIRLINES', payload: data });
-      console.log(data);
+
       toast.success(airlineName + ' removed successfully!');
       dispatch({ type: 'FETCH_SUCCESS' });
     } catch (err) {
@@ -267,8 +267,8 @@ export default function Airlines() {
       <form
         className={
           isFormOpen === 2
-            ? 'add-airport-form  active-add-airport-form'
-            : 'add-airport-form '
+            ? 'add-airport-form active-add-airport-form'
+            : 'add-airport-form'
         }
         onSubmit={addFlightHandler}
       >

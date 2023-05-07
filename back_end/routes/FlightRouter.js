@@ -10,11 +10,11 @@ flightRouter.get(
   '/',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const airlines = await Flight.find({});
-    if (!airlines) {
+    const flights = await Flight.find({});
+    if (!flights) {
       res.status(404).send({ message: 'No flights found!' });
     }
-    res.send(airlines);
+    res.send(flights);
     return;
   })
 );
@@ -74,5 +74,24 @@ flightRouter.get(
 //     return;
 //   })
 // );
+
+flightRouter.put(
+  '/schedules/add/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    console.log(req.params.id);
+    const result = await Flight.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: { schedules: req.body.schedules },
+      },
+      { returnNewDocument: true }
+    );
+
+    const flights = await Flight.find({});
+    res.send(flights);
+    return;
+  })
+);
 
 export default flightRouter;
