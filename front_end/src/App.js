@@ -19,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardScreen />} />
         <Route path="/dashboard/:airline" element={<DashboardScreen />} />
         <Route path="/bookings" element={<BookingScreen />} />
+        <Route path="/bookings/search" element={<BookingScreen />} />
       </Routes>
     </div>
   );

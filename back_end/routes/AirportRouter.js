@@ -18,6 +18,18 @@ airportRouter.get(
   })
 );
 
+airportRouter.get(
+  '/fetch',
+  expressAsyncHandler(async (req, res) => {
+    const airports = await Airport.find({});
+    if (!airports) {
+      res.status(404).send({ message: 'No airports found!' });
+    }
+    res.send(airports);
+    return;
+  })
+);
+
 airportRouter.put(
   '/add',
   isAuth,
