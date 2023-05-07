@@ -6,6 +6,7 @@ import { Store } from '../Store';
 import { getDate, getError } from '../Utils';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -157,7 +158,12 @@ export default function BookingScreen() {
                   </div>
                 ))}
               </div>
-              <button className="flight-book-button">BOOK</button>
+              <Link
+                to={`/bookings/${schedule._id}`}
+                className="flight-book-button"
+              >
+                BOOK
+              </Link>
             </div>
           ))}
       </div>

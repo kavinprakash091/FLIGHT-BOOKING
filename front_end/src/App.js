@@ -7,6 +7,7 @@ import SigninScreen from './screens/SigninScreen';
 import SignupScreen from './screens/SignupScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import BookingScreen from './screens/BookingScreen';
+import TicketBookingScreen from './screens/TicketBookingScreen';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardScreen />} />
         <Route path="/dashboard/:airline" element={<DashboardScreen />} />
         <Route path="/bookings" element={<BookingScreen />} />
+        <Route path="/bookings/:schedule" element={<TicketBookingScreen />} />
       </Routes>
     </div>
   );
