@@ -119,8 +119,8 @@ export default function Airlines() {
     const flights = airlines.find((airline) => {
       return airline._id === airlineId;
     });
-    if (!flights.flights.includes(flightName)) {
-      flights.flights.push(flightName);
+    if (!flights.flights.includes(flightNumber)) {
+      flights.flights.push(flightNumber);
     }
     return flights.flights;
   };
@@ -211,7 +211,8 @@ export default function Airlines() {
                     : setBigAirlines(index + 1);
                 }}
               >
-                {bigAirlines === index + 1 ? 'Hide flights ' : 'View flights '}
+                {bigAirlines === index + 1 ? 'Hide flights ' : 'View flights '}(
+                {airline.flights.length}){' '}
                 <i
                   className={
                     bigAirlines === index + 1

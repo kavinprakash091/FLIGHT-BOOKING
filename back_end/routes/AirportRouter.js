@@ -38,6 +38,7 @@ airportRouter.put(
       code: req.body.airportCode,
       name: req.body.airportName,
       location: req.body.airportLocation,
+      locationCode: req.body.airportLocationCode,
     });
     await airport.save();
 
@@ -68,6 +69,7 @@ airportRouter.put(
         code: req.body.airportCode,
         name: req.body.airportName,
         location: req.body.airportLocation,
+        locationCode: req.body.airportLocationCode,
       },
       { new: true }
     );

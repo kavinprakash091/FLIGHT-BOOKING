@@ -50,8 +50,38 @@ export default function HomeSearch() {
 
   const searchHandler = async (e) => {
     e.preventDefault();
-    alert(departureAirport + ' ' + arrivalAirport + ' ' + searchDate);
-    navigate('/bookings/search');
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      if (
+        departureAirport !== '' &&
+        arrivalAirport === '' &&
+        searchDate === ''
+      ) {
+        const data = await Axios.get(
+          `/api/search/departure/${departureAirport}`
+        );
+        ctxDispatch({ type: 'SEARCH', payload: data });
+      } else if (
+        arrivalAirport !== '' &&
+        departureAirport === '' &&
+        searchDate === ''
+      ) {
+        const data = await Axios.get(`/api/search/arrival/${arrivalAirport}`);
+        ctxDispatch({ type: 'SEARCH', payload: data });
+      } else if (
+        searchDate !== '' &&
+        departureAirport === '' &&
+        arrivalAirport === ''
+      ) {
+        const data = await Axios.get(`/api/search/date/${searchDate}`);
+        ctxDispatch({ type: 'SEARCH', payload: data });
+      }
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+    navigate('/bookings');
   };
 
   return (
@@ -67,8 +97,8 @@ export default function HomeSearch() {
             <option></option>
             {airports &&
               airports.map((airport) => (
-                <option key={airport._id} value={airport._id}>
-                  {airport.name}({airport.code}) - {airport.location}
+                <option key={airport._id} value={airport.code}>
+                  {airport.name}({airport.locationCode}) - {airport.location}
                 </option>
               ))}
           </select>
@@ -84,7 +114,7 @@ export default function HomeSearch() {
             <option></option>
             {airports &&
               airports.map((airport) => (
-                <option key={airport._id} value={airport._id}>
+                <option key={airport._id} value={airport.code}>
                   {airport.name}({airport.code}) - {airport.location}
                 </option>
               ))}

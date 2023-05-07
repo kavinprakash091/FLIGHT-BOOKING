@@ -146,10 +146,9 @@
 }
 
 .airport-card {
-  height: 50vh;
+  height: 60vh;
   width: 30%;
   margin-bottom: 5%;
-  /* border: 1px solid #8d8d8d; */
   border-radius: 5px;
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
     rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
@@ -177,11 +176,13 @@
 .airport-card-detail > h3 {
   font-size: 1rem;
   font-weight: 500;
+  color: #00b97f;
 }
 
 .airport-card-detail > h4 {
   font-size: 1rem;
   font-weight: 400;
+  color: #8d8d8d;
 }
 
 .airport-card-button-container {
@@ -325,6 +326,13 @@
   margin-top: -3%;
   padding-bottom: 5%;
   font-size: 0.7rem;
+  color: #8d8d8d;
+}
+
+.flight-departure-details h2 span,
+.flight-arrival-details h2 span {
+  font-size: 0.8rem;
+  font-weight: 400;
   color: #8d8d8d;
 }
 

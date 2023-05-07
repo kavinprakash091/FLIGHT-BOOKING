@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
@@ -20,7 +20,7 @@ const reducer = (state, action) => {
 
 export default function Flights({ airline }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userDetails, flights } = state;
+  const { userDetails, flights, airports, schedules } = state;
 
   const [{ loading }, dispatch] = useReducer(reducer, { loading: false });
 
@@ -39,6 +39,57 @@ export default function Flights({ airline }) {
   const [businessFare, setBusinessFare] = useState(0);
   const [flightStatus, setFlightStatus] = useState('');
   const [departureDate, setDepartureDate] = useState('');
+
+  const fetchAirports = async () => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await Axios.get('/api/airport', {
+        headers: { authorization: `Bearer ${userDetails.token}` },
+      });
+      localStorage.setItem('airports', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_AIRPORT', payload: data });
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+  };
+
+  const fetchFlights = async () => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await Axios.get('/api/flights', {
+        headers: { authorization: `Bearer ${userDetails.token}` },
+      });
+      localStorage.setItem('flights', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_FLIGHTS', payload: data });
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+  };
+
+  const fetchSchedules = async () => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+      const { data } = await Axios.get('/api/schedules', {
+        headers: { authorization: `Bearer ${userDetails.token}` },
+      });
+      localStorage.setItem('schedules', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_SCHEDULES', payload: data });
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedules();
+    fetchFlights();
+    fetchAirports();
+  }, []);
 
   const addScheduleHandler = async (e) => {
     e.preventDefault();
@@ -59,27 +110,23 @@ export default function Flights({ airline }) {
         },
       ];
 
-      const schedules = {
-        departureAirport: departureAirport,
-        departureTime: departureTime,
-        arrivalAirport: arrivalAirport,
-        arrivalTime: arrivalTime,
-        seats: seats,
-        status: flightStatus,
-        date: new Date(departureDate),
-      };
-
       const { data } = await Axios.put(
-        `/api/flights/schedules/add/${flightId}`,
+        `/api/schedules/add/${flightId}`,
         {
-          schedules,
+          departureAirport,
+          departureTime,
+          arrivalAirport,
+          arrivalTime,
+          seats,
+          flightStatus,
+          departureDate,
         },
         {
           headers: { authorization: `Bearer ${userDetails.token}` },
         }
       );
-      localStorage.setItem('flights', JSON.stringify(data));
-      ctxDispatch({ type: 'ADD_FLIGHTS', payload: data });
+      localStorage.setItem('schedules', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_SCHEDULES', payload: data });
       toast.success('Scheduled successfully!');
       dispatch({ type: 'FETCH_SUCCESS' });
     } catch (err) {
@@ -135,79 +182,115 @@ export default function Flights({ airline }) {
                 </div>
 
                 <div className="flights-schedule-list-container">
-                  {flight.schedules.map((schedule) => (
-                    <div className="flight-booking-card" key={schedule._id}>
-                      <div className="flight-booking-card-image">
-                        <img
-                          src="https://images.ixigo.com/img/common-resources/airline-new/SG.png"
-                          alt="image"
-                        />
-                        <p>
-                          {flight.name} - {flight.number}
-                        </p>
-                      </div>
-
-                      <div className="flight-route-details">
-                        <div className="flight-departure-details">
-                          <h2>{schedule.departureAirport}</h2>
-                          <h1>{schedule.departureTime}</h1>
-                          <h3>{getDate(schedule.date)}</h3>
-                        </div>
-                        <div className="line-container">
-                          <h2>2hr 5min</h2>
-                          <i className="fa-regular fa-clock"></i>
-                        </div>
-                        <div className="flight-arrival-details">
-                          <h2>{schedule.arrivalAirport}</h2>
-                          <h1>{schedule.arrivalTime}</h1>
-                          <h3>{getDate(schedule.date)}</h3>
-                        </div>
-                      </div>
-                      <div className="flight-fare-details">
-                        {schedule.seats.map((seat, idx) => (
-                          <div key={idx + 1}>
-                            <h2>
-                              {seat.class} -{' '}
-                              <i className="fa-solid fa-indian-rupee-sign"></i>{' '}
-                              {seat.fare}
-                            </h2>
-                            <p>Available {seat.countSeats} seats</p>
+                  {schedules.map(
+                    (schedule) =>
+                      schedule.flightId === flight._id && (
+                        <div className="flight-booking-card" key={schedule._id}>
+                          <div className="flight-booking-card-image">
+                            <img
+                              src="https://images.ixigo.com/img/common-resources/airline-new/SG.png"
+                              alt="image"
+                            />
+                            <p>
+                              {flight.name} - {flight.number}
+                            </p>
                           </div>
-                        ))}
-                      </div>
-                      <div className="schedule-button-container">
-                        <div
-                          className={
-                            schedule.status === 'On time'
-                              ? 'flight-status green'
-                              : schedule.status === 'Delay'
-                              ? 'flight-status yellow'
-                              : schedule.status === 'Cancelled' &&
-                                'flight-status red'
-                          }
-                        >
-                          {schedule.status}
+
+                          <div className="flight-route-details">
+                            <div className="flight-departure-details">
+                              <h2>
+                                {airports &&
+                                  airports.find(
+                                    (airport) =>
+                                      airport.code === schedule.departureAirport
+                                  ).locationCode}{' '}
+                                <br></br>
+                                <span>
+                                  (
+                                  {airports &&
+                                    airports.find(
+                                      (airport) =>
+                                        airport.code ===
+                                        schedule.departureAirport
+                                    ).location}
+                                  )
+                                </span>
+                              </h2>
+                              <h1>{schedule.departureTime}</h1>
+                              <h3>{getDate(schedule.date)}</h3>
+                            </div>
+                            <div className="line-container">
+                              <h2>2hr 5min</h2>
+                              <i className="fa-regular fa-clock"></i>
+                            </div>
+                            <div className="flight-arrival-details">
+                              <h2>
+                                {airports &&
+                                  airports.find(
+                                    (airport) =>
+                                      airport.code === schedule.arrivalAirport
+                                  ).locationCode}{' '}
+                                <br></br>
+                                <span>
+                                  (
+                                  {airports &&
+                                    airports.find(
+                                      (airport) =>
+                                        airport.code === schedule.arrivalAirport
+                                    ).location}
+                                  )
+                                </span>
+                              </h2>
+                              <h1>{schedule.arrivalTime}</h1>
+                              <h3>{getDate(schedule.date)}</h3>
+                            </div>
+                          </div>
+                          <div className="flight-fare-details">
+                            {schedule.seats.map((seat, idx) => (
+                              <div key={idx + 1}>
+                                <h2>
+                                  {seat.class} -{' '}
+                                  <i className="fa-solid fa-indian-rupee-sign"></i>{' '}
+                                  {seat.fare}
+                                </h2>
+                                <p>Available {seat.countSeats} seats</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="schedule-button-container">
+                            <div
+                              className={
+                                schedule.status === 'On time'
+                                  ? 'flight-status green'
+                                  : schedule.status === 'Delay'
+                                  ? 'flight-status yellow'
+                                  : schedule.status === 'Cancelled' &&
+                                    'flight-status red'
+                              }
+                            >
+                              {schedule.status}
+                            </div>
+                            <Link
+                              to={`/dashboard/${flight._id}`}
+                              onClick={() => {
+                                setFormOpen(true);
+                                setFlightId(flight._id);
+                              }}
+                              className="admin-add-button airport-card-edit-button"
+                            >
+                              EDIT
+                            </Link>
+                            <Link
+                              to={`/dashboard/${flight._id}`}
+                              // onClick={() => deleteAirline(airline.name, airline._id)}
+                              className="admin-add-button airport-card-delete-button"
+                            >
+                              DELETE
+                            </Link>
+                          </div>
                         </div>
-                        <Link
-                          to={`/dashboard/${flight._id}`}
-                          onClick={() => {
-                            setFormOpen(true);
-                            setFlightId(flight._id);
-                          }}
-                          className="admin-add-button airport-card-edit-button"
-                        >
-                          EDIT
-                        </Link>
-                        <Link
-                          to={`/dashboard/${flight._id}`}
-                          // onClick={() => deleteAirline(airline.name, airline._id)}
-                          className="admin-add-button airport-card-delete-button"
-                        >
-                          DELETE
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
+                      )
+                  )}
                 </div>
                 <h5
                   onClick={() => {
@@ -219,6 +302,7 @@ export default function Flights({ airline }) {
                   {bigFlightSchedules === index + 1
                     ? 'Hide schedules '
                     : 'View schedules '}
+
                   <i
                     className={
                       bigFlightSchedules === index + 1
@@ -252,13 +336,19 @@ export default function Flights({ airline }) {
           <label htmlFor="departureAirport">
             Departure Airport<span>*</span>
           </label>
-          <input
-            type="text"
+          <select
             id="departureAirport"
             value={departureAirport}
             onChange={(e) => setDepartureAirport(e.target.value)}
-            required
-          />
+          >
+            <option></option>
+            {airports &&
+              airports.map((airport) => (
+                <option key={airport._id} value={airport.code}>
+                  {airport.locationCode}({airport.code}) - {airport.location}
+                </option>
+              ))}
+          </select>
         </div>
 
         <div className="input-fields">
@@ -278,13 +368,19 @@ export default function Flights({ airline }) {
           <label htmlFor="arrivalAirport">
             Arrival Airport<span>*</span>
           </label>
-          <input
-            type="text"
+          <select
             id="arrivalAirport"
             value={arrivalAirport}
             onChange={(e) => setArrivalAirport(e.target.value)}
-            required
-          />
+          >
+            <option></option>
+            {airports &&
+              airports.map((airport) => (
+                <option key={airport._id} value={airport.code}>
+                  {airport.locationCode}({airport.code}) - {airport.location}
+                </option>
+              ))}
+          </select>
         </div>
 
         <div className="input-fields">

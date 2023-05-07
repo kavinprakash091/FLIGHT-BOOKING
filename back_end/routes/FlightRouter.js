@@ -87,23 +87,4 @@ flightRouter.get(
 //   })
 // );
 
-flightRouter.put(
-  '/schedules/add/:id',
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    console.log(req.params.id);
-    const result = await Flight.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $push: { schedules: req.body.schedules },
-      },
-      { returnNewDocument: true }
-    );
-
-    const flights = await Flight.find({});
-    res.send(flights);
-    return;
-  })
-);
-
 export default flightRouter;

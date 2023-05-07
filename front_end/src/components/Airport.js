@@ -29,6 +29,7 @@ export default function Airport() {
   const [airportCode, setAirportCode] = useState('');
   const [airportName, setAirportName] = useState('');
   const [airportLocation, setAirportLoctaion] = useState('');
+  const [airportLocationCode, setAirportLoctaionCode] = useState('');
 
   const fetchAirports = async () => {
     try {
@@ -60,6 +61,7 @@ export default function Airport() {
           airportCode,
           airportName,
           airportLocation,
+          airportLocationCode,
         },
         {
           headers: { authorization: `Bearer ${userDetails.token}` },
@@ -86,6 +88,7 @@ export default function Airport() {
           airportCode,
           airportName,
           airportLocation,
+          airportLocationCode,
         },
         {
           headers: { authorization: `Bearer ${userDetails.token}` },
@@ -109,7 +112,8 @@ export default function Airport() {
     airport,
     airportCode,
     airportName,
-    airportLocation
+    airportLocation,
+    airportLocationCode
   ) => {
     setUpdate(true);
     setFormOpen(true);
@@ -117,6 +121,7 @@ export default function Airport() {
     setAirportCode(airportCode);
     setAirportName(airportName);
     setAirportLoctaion(airportLocation);
+    setAirportLoctaionCode(airportLocationCode);
   };
 
   const deleteAirport = async (airport, airportName) => {
@@ -156,7 +161,9 @@ export default function Airport() {
               <div className="airport-card-detail">
                 <h2>{airport.name}</h2>
                 <h3>{airport.code}</h3>
-                <h4>{airport.location}</h4>
+                <h4>
+                  {airport.location}({airport.locationCode})
+                </h4>
               </div>
               <div className="airport-card-button-container">
                 <button
@@ -165,7 +172,8 @@ export default function Airport() {
                       airport._id,
                       airport.code,
                       airport.name,
-                      airport.location
+                      airport.location,
+                      airport.locationCode
                     )
                   }
                   className="airport-card-edit-button"
@@ -198,6 +206,7 @@ export default function Airport() {
               setAirportCode('');
               setAirportName('');
               setAirportLoctaion('');
+              setAirportLoctaionCode('');
             }}
             className="fa-solid fa-xmark"
           ></i>
@@ -235,6 +244,18 @@ export default function Airport() {
             id="airportLocation"
             value={airportLocation}
             onChange={(e) => setAirportLoctaion(e.target.value)}
+            required
+          />
+        </div>
+        <div className="input-fields">
+          <label htmlFor="airportLocationCode">
+            Airport Location Code<span>*</span>
+          </label>
+          <input
+            type="text"
+            id="airportLocationCode"
+            value={airportLocationCode}
+            onChange={(e) => setAirportLoctaionCode(e.target.value)}
             required
           />
         </div>

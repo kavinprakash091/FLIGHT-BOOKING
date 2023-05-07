@@ -5,23 +5,6 @@ const flightSchema = new mongoose.Schema({
   number: { type: String, unique: true, required: true },
   name: { type: String, required: true },
   category: { type: String, required: true },
-  schedules: [
-    {
-      departureAirport: { type: String },
-      departureTime: { type: String },
-      arrivalAirport: { type: String },
-      arrivalTime: { type: String },
-      seats: [
-        {
-          class: { type: String },
-          countSeats: { type: Number },
-          fare: { type: Number },
-        },
-      ],
-      status: { type: String },
-      date: { type: Date },
-    },
-  ],
   image: { type: String },
 });
 
