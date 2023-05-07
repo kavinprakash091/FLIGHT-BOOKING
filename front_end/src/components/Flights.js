@@ -176,6 +176,18 @@ export default function Flights({ airline }) {
                         ))}
                       </div>
                       <div className="schedule-button-container">
+                        <div
+                          className={
+                            schedule.status === 'On time'
+                              ? 'flight-status green'
+                              : schedule.status === 'Delay'
+                              ? 'flight-status yellow'
+                              : schedule.status === 'Cancelled' &&
+                                'flight-status red'
+                          }
+                        >
+                          {schedule.status}
+                        </div>
                         <Link
                           to={`/dashboard/${flight._id}`}
                           onClick={() => {
