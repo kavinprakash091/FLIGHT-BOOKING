@@ -9,8 +9,12 @@ import DashboardScreen from './screens/DashboardScreen';
 import BookingScreen from './screens/BookingScreen';
 import TicketBookingScreen from './screens/TicketBookingScreen';
 import ActivityScreen from './screens/ActivityScreen';
+import { useContext } from 'react';
+import { Store } from './Store';
 
 function App() {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userDetails } = state;
   return (
     <div className="App">
       <ToastContainer position="top-right" limit={1} />
@@ -18,11 +22,17 @@ function App() {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/signin" element={<SigninScreen />} />
         <Route path="/signup" element={<SignupScreen />} />
-        <Route path="/dashboard" element={<DashboardScreen />} />
-        <Route path="/dashboard/:airline" element={<DashboardScreen />} />
+        {userDetails && userDetails.users.userType === 'admin' && (
+          <Route path="/dashboard" element={<DashboardScreen />} />
+        )}
+        {userDetails && userDetails.users.userType === 'admin' && (
+          <Route path="/dashboard/:airline" element={<DashboardScreen />} />
+        )}
         <Route path="/bookings" element={<BookingScreen />} />
         <Route path="/bookings/:schedule" element={<TicketBookingScreen />} />
-        <Route path="/activities" element={<ActivityScreen />} />
+        {userDetails && (
+          <Route path="/activities" element={<ActivityScreen />} />
+        )}
       </Routes>
     </div>
   );

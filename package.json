@@ -1,5 +1,31 @@
 {
+  "name": "flight-booking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "dependencies": {
+    "js-tokens": "^4.0.0",
+    "loose-envify": "^1.4.0",
+    "prop-types": "^15.8.1",
+    "object-assign": "^4.1.1",
+    "react-is": "^16.13.1",
+    "react": "^18.2.0",
     "react-loading": "^2.0.3"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "cd front_end && npm install && npm run build",
+    "start": "cd back_end && npm install && node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kavinprakash091/FLIGHT-BOOKING.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kavinprakash091/FLIGHT-BOOKING/issues"
+  },
+  "homepage": "https://github.com/kavinprakash091/FLIGHT-BOOKING#readme"
 }

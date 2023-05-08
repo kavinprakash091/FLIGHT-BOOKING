@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
+import core from 'cors';
 import userRouter from './routes/UserRouter.js';
 import airportRouter from './routes/AirportRouter.js';
 import airlinesRouter from './routes/AirlinesRouter.js';
@@ -21,6 +23,7 @@ mongoose
   });
 
 const app = express();
+app.use(core());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +38,12 @@ app.use('/api/booking', bookingRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
+});
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '../front_end/build')));
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../front_end/build/index.html'));
 });
 
 const port = 5000;
