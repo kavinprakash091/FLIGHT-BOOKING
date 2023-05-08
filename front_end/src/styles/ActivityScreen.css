@@ -61,3 +61,32 @@
   color: #565656;
   text-align: left;
 }
+
+.activity-page-header {
+  width: 80%;
+  padding: 3%;
+  margin: 5% auto;
+  border-radius: 5px;
+  background-color: #ffe9c8;
+  box-shadow: #32325d40 0px 30px 60px -12px inset,
+    #0000004d 0px 18px 36px -18px inset;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.booking-button-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.booking-filter-button {
+  padding: 4% 5%;
+}
+
+.active-filter {
+  background-color: #ffffff;
+  color: #212121;
+}

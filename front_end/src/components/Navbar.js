@@ -7,15 +7,13 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userDetails } = state;
+  const { userDetails, search } = state;
 
   const signoutHandler = () => {
     localStorage.removeItem('userDetails');
-    localStorage.removeItem('airports');
-    localStorage.removeItem('airlines');
-    localStorage.removeItem('flights');
-    localStorage.removeItem('schedules');
     localStorage.removeItem('activities');
+    userDetails.users.userType === 'admin' &&
+      localStorage.removeItem('allActivities');
     ctxDispatch({ type: 'SIGN_OUT' });
     navigate('/');
     toast.success(userDetails.users.firstname + ' signed out successfully!');
@@ -32,7 +30,17 @@ export default function Navbar() {
         {userDetails && userDetails.users.userType !== 'customer' && (
           <Link to="/dashboard">Dashboard</Link>
         )}
-        <Link to="/bookings">Bookings</Link>
+        <Link
+          to="/bookings"
+          onClick={() => {
+            ctxDispatch({
+              type: 'SEARCH',
+              payload: { isSearch: false, serchSchedule: [] },
+            });
+          }}
+        >
+          Bookings
+        </Link>
         <Link to="/activities">Activities</Link>
         <i className="fa-solid fa-magnifying-glass"></i>
       </div>

@@ -21,7 +21,12 @@ const initialState = {
   activities: localStorage.getItem('activities')
     ? JSON.parse(localStorage.getItem('activities'))
     : [],
+  allActivities: localStorage.getItem('allActivities')
+    ? JSON.parse(localStorage.getItem('allActivities'))
+    : [],
+
   search: { isSearched: false, searchSchedules: [] },
+  searchBookings: { isSearched: false, searchSchedules: [] },
 };
 
 const reducer = (state, action) => {
@@ -50,10 +55,24 @@ const reducer = (state, action) => {
       return { ...state, schedules: action.payload };
     case 'ADD_ACTIVITIES':
       return { ...state, activities: action.payload };
+    case 'ADD_ALL_ACTIVITIES':
+      return { ...state, allActivities: action.payload };
+
     case 'SEARCH':
       return {
         ...state,
-        search: { isSearched: true, searchSchedules: action.payload },
+        search: {
+          isSearched: action.payload.isSearch,
+          searchSchedules: action.payload.searchSchedules,
+        },
+      };
+    case 'SEARCH_BOOKINGS':
+      return {
+        ...state,
+        searchBookings: {
+          isSearched: action.payload.isSearch,
+          searchSchedules: action.payload.searchSchedules,
+        },
       };
     default:
       return state;

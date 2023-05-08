@@ -58,7 +58,10 @@ export default function HomeSearch() {
         arrivalAirport,
         searchDate,
       });
-      ctxDispatch({ type: 'SEARCH', payload: data });
+      ctxDispatch({
+        type: 'SEARCH',
+        payload: { isSearch: true, searchSchedules: data },
+      });
       dispatch({ type: 'FETCH_SUCCESS' });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILED' });
@@ -69,58 +72,61 @@ export default function HomeSearch() {
 
   return (
     <section className="booking-search-container">
+      {' '}
       {loading && (
         <div className="home-search-loading">
           <Loading />
         </div>
-      )}
+      )}{' '}
       <form className="booking-search-form" onSubmit={searchHandler}>
         <div className="input-fields">
-          <label htmlFor="departureAirport">Departure Airport</label>
+          <label htmlFor="departureAirport"> Departure Airport </label>{' '}
           <select
             id="departureAirport"
             value={departureAirport}
             onChange={(e) => setDepartureAirport(e.target.value)}
           >
-            <option></option>
+            <option> </option>{' '}
             {airports &&
               airports.map((airport) => (
                 <option key={airport._id} value={airport.code}>
-                  {airport.name}({airport.locationCode}) - {airport.location}
+                  {' '}
+                  {airport.name}({airport.locationCode}) - {airport.location}{' '}
                 </option>
-              ))}
-          </select>
-        </div>
-        <i className="fa-solid fa-right-left"></i>
+              ))}{' '}
+          </select>{' '}
+        </div>{' '}
+        <i className="fa-solid fa-right-left"> </i>{' '}
         <div className="input-fields">
-          <label htmlFor="arrivalAirport">Arrival Airport</label>
+          <label htmlFor="arrivalAirport"> Arrival Airport </label>{' '}
           <select
             id="arrivalAirport"
             value={arrivalAirport}
             onChange={(e) => setArrivalAirport(e.target.value)}
           >
-            <option></option>
+            <option> </option>{' '}
             {airports &&
               airports.map((airport) => (
                 <option key={airport._id} value={airport.code}>
-                  {airport.name}({airport.code}) - {airport.location}
+                  {' '}
+                  {airport.name}({airport.code}) - {airport.location}{' '}
                 </option>
-              ))}
-          </select>
-        </div>
+              ))}{' '}
+          </select>{' '}
+        </div>{' '}
         <div className="input-fields">
-          <label htmlFor="departureAirport">Departure Time</label>
+          <label htmlFor="departureAirport"> Departure Time </label>{' '}
           <input
             type="date"
             id="departureTimet"
             value={searchDate}
             onChange={(e) => setSearchDate(e.target.value)}
-          />
-        </div>
+          />{' '}
+        </div>{' '}
         <button type="submit" className="booking-search-button">
-          SEARCH
-        </button>
-      </form>
+          SEARCH{' '}
+        </button>{' '}
+      </form>{' '}
     </section>
   );
 }

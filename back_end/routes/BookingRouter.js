@@ -6,6 +6,20 @@ import Booking from '../models/BookingModel.js';
 const bookingRouter = express.Router();
 
 bookingRouter.get(
+  '/',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const bookings = await Booking.find({});
+    if (!bookings) {
+      res.status(404).send({ message: 'No bookings found!' });
+      return;
+    }
+    res.send(bookings);
+    return;
+  })
+);
+
+bookingRouter.get(
   '/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
@@ -49,6 +63,21 @@ bookingRouter.put(
     const bookings = await Booking.deleteMany({
       scheduleId: { $in: req.body.scheduleIds },
     });
+    res.send(bookings);
+    return;
+  })
+);
+
+bookingRouter.get(
+  '/flight/search/:id',
+  expressAsyncHandler(async (req, res) => {
+    const bookings = await Booking.find({
+      flightId: req.params.id,
+    });
+    if (!bookings) {
+      res.status(404).send({ message: 'No bookings found!' });
+      return;
+    }
     res.send(bookings);
     return;
   })
