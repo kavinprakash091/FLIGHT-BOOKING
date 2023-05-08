@@ -82,7 +82,10 @@ export default function ScheduleCard({ schedule }) {
           </div>
         ))}
       </div>
-      <Link to={`/bookings/${schedule._id}`} className="flight-book-button">
+      <Link
+        to={userDetails ? `/bookings/${schedule._id}` : '/signin'}
+        className="flight-book-button"
+      >
         BOOK
       </Link>
     </section>

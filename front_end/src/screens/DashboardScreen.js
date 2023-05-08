@@ -8,6 +8,7 @@ export default function DashboardScreen() {
   return (
     <section className="dashboard-page">
       <Navbar />
+      <h1>Admin Dashboard</h1>
       <div className="dashboard-detail-container">
         <Airport />
         <Airlines />

@@ -71,6 +71,7 @@ export default function BookingScreen() {
     <section className="booking-page">
       {loading && <Loading />}
       <Navbar />
+      <h1>Available Flights</h1>
       <HomeSearch />
 
       <div className="flight-booking-card-container">

@@ -85,30 +85,52 @@ export default function ActivityScreen() {
     e.preventDefault();
     try {
       dispatch({ type: 'FETCH_REQUEST' });
-      const { data } = await Axios.get(
-        `/api/booking/flight/search/${flightNumber}`,
-        {
-          headers: { authorization: `Bearer ${userDetails.token}` },
-        }
-      );
-      console.log(data);
-      ctxDispatch({
-        type: 'SEARCH_BOOKINGS',
-        payload: { isSearch: true, searchSchedules: data },
-      });
-      dispatch({ type: 'FETCH_SUCCESS' });
+      if (flightNumber !== '' && searchDate === '') {
+        const { data } = await Axios.get(
+          `/api/booking/flight/search/${flightNumber}`,
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        );
+        ctxDispatch({
+          type: 'SEARCH_BOOKINGS',
+          payload: { isSearch: true, searchSchedules: data },
+        });
+        dispatch({ type: 'FETCH_SUCCESS' });
+      }
+
+      if (flightNumber === '' && searchDate !== '') {
+        const { data } = await Axios.get(
+          `/api/schedules/flight/search/${searchDate}`,
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        );
+        const bookings = await Axios.post(
+          `/api/booking/flight/search/date`,
+          { data },
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        );
+
+        ctxDispatch({
+          type: 'SEARCH_BOOKINGS',
+          payload: { isSearch: true, searchSchedules: bookings.data },
+        });
+        dispatch({ type: 'FETCH_SUCCESS' });
+      }
     } catch (err) {
       dispatch({ type: 'FETCH_FAILED' });
       toast.error(getError(err));
     }
   };
 
-  console.log(searchBookings);
-
   return (
     <section className="activity-page">
       {loading && <Loading />}
       <Navbar />
+      <h1>Booking History</h1>
       <div className="activity-page-header">
         {userDetails.users.userType === 'admin' && (
           <div className="booking-button-container">
@@ -171,7 +193,8 @@ export default function ActivityScreen() {
             ? searchBookings.searchSchedules.map((activity, index) =>
                 schedules.map(
                   (schedule) =>
-                    schedule._id === activity.scheduleId && (
+                    schedule._id === activity.scheduleId &&
+                    activity.userId === userDetails.users._id && (
                       <ActivityCard
                         activity={activity}
                         schedule={schedule}
@@ -197,6 +220,21 @@ export default function ActivityScreen() {
                     )
                 )
               )
+          : searchBookings.isSearched
+          ? searchBookings.searchSchedules.map((activity, index) =>
+              schedules.map(
+                (schedule) =>
+                  schedule._id === activity.scheduleId && (
+                    <ActivityCard
+                      activity={activity}
+                      schedule={schedule}
+                      index={index}
+                      type={true}
+                      key={index + 1}
+                    />
+                  )
+              )
+            )
           : allActivities &&
             allActivities.map((activity, index) =>
               schedules.map(

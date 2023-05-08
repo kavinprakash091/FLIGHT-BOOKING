@@ -116,23 +116,16 @@ scheduleRouter.put(
   })
 );
 
-// flightRouter.put(
-//   '/update/:id',
-//   expressAsyncHandler(async (req, res) => {
-//     const airport = await Airport.findOneAndUpdate(
-//       { _id: req.params.id },
-//       {
-//         code: req.body.airportCode,
-//         name: req.body.airportName,
-//         location: req.body.airportLocation,
-//       },
-//       { new: true }
-//     );
-
-//     const airports = await Airport.find({});
-//     res.send(airports);
-//     return;
-//   })
-// );
+scheduleRouter.get(
+  '/flight/search/:date',
+  expressAsyncHandler(async (req, res) => {
+    const schedules = await Schedule.find(
+      { date: req.params.date },
+      { _id: 1 }
+    );
+    res.send(schedules);
+    return;
+  })
+);
 
 export default scheduleRouter;

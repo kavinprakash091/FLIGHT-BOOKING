@@ -137,6 +137,7 @@ export default function TicketBookingScreen() {
     <section className="ticket-booking-page">
       {loading && <Loading />}
       <Navbar />
+      <h1>Ticket Booking</h1>
       <ProgressIndicator progress={progress} />
       <div className="ticket-booking-container">
         <div className="ticket-booking-container-header">

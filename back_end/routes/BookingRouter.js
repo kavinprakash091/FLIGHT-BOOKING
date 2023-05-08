@@ -83,6 +83,21 @@ bookingRouter.get(
   })
 );
 
+bookingRouter.post(
+  '/flight/search/date',
+  expressAsyncHandler(async (req, res) => {
+    const bookings = await Booking.find({
+      scheduleId: { $in: req.body.data },
+    });
+    if (!bookings) {
+      res.status(404).send({ message: 'No bookings found!' });
+      return;
+    }
+    res.send(bookings);
+    return;
+  })
+);
+
 bookingRouter.put(
   '/add/:id',
   isAuth,

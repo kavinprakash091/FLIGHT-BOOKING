@@ -20,8 +20,8 @@ function App() {
       <ToastContainer position="top-right" limit={1} />
       <Routes>
         <Route path="/" element={<HomeScreen />} />
-        <Route path="/signin" element={<SigninScreen />} />
-        <Route path="/signup" element={<SignupScreen />} />
+        {!userDetails && <Route path="/signin" element={<SigninScreen />} />}
+        {!userDetails && <Route path="/signup" element={<SignupScreen />} />}
         {userDetails && userDetails.users.userType === 'admin' && (
           <Route path="/dashboard" element={<DashboardScreen />} />
         )}

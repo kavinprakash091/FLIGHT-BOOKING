@@ -39,9 +39,9 @@ export default function Navbar() {
             });
           }}
         >
-          Bookings{' '}
+          Flights{' '}
         </Link>{' '}
-        <Link to="/activities"> Activities </Link>{' '}
+        <Link to={userDetails ? '/activities' : '/signin'}> Activities </Link>{' '}
         <i className="fa-solid fa-magnifying-glass"> </i>{' '}
       </div>
       {userDetails ? (
