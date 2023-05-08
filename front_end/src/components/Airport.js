@@ -182,12 +182,6 @@ export default function Airport() {
                 >
                   EDIT
                 </button>
-                <button
-                  onClick={() => deleteAirport(airport._id, airport.name)}
-                  className="airport-card-delete-button"
-                >
-                  DELETE
-                </button>
               </div>
             </div>
           ))}
