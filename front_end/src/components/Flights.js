@@ -34,9 +34,9 @@ export default function Flights({ airline }) {
   const [departureTime, setDepartureTime] = useState('');
   const [arrivalAirport, setArrivalAirport] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
-  const [economySeats, setEconomySeats] = useState(0);
+  const [economySeats, setEconomySeats] = useState(40);
   const [economyFare, setEconomyFare] = useState(0);
-  const [businessSeats, setBusinessSeats] = useState(0);
+  const [businessSeats, setBusinessSeats] = useState(20);
   const [businessFare, setBusinessFare] = useState(0);
   const [flightStatus, setFlightStatus] = useState('');
   const [departureDate, setDepartureDate] = useState('');
@@ -97,7 +97,6 @@ export default function Flights({ airline }) {
     setFormOpen(false);
     try {
       dispatch({ type: 'FETCH_REQUEST' });
-
       const seats = [
         {
           class: 'Economy',
@@ -129,6 +128,97 @@ export default function Flights({ airline }) {
       localStorage.setItem('schedules', JSON.stringify(data));
       ctxDispatch({ type: 'ADD_SCHEDULES', payload: data });
       toast.success('Scheduled successfully!');
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+  };
+
+  const deleteSchedule = async (scheduleId) => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      await Axios.get(`/api/booking/admin/delete/${scheduleId}`, {
+        headers: { authorization: `Bearer ${userDetails.token}` },
+      });
+
+      const { data } = await Axios.put(
+        `/api/schedules/delete/${scheduleId}`,
+
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+      localStorage.setItem('schedules', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_SCHEDULES', payload: data });
+      toast.success('Schedule removed successfully!');
+      dispatch({ type: 'FETCH_SUCCESS' });
+    } catch (err) {
+      dispatch({ type: 'FETCH_FAILED' });
+      toast.error(getError(err));
+    }
+  };
+
+  const deleteFlights = async (
+    flightId,
+    flightName,
+    flightCode,
+    airlinesId
+  ) => {
+    try {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      const result = await Axios.put(
+        `/api/schedules/admin/delete/${flightId}`,
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+
+      localStorage.setItem('schedules', JSON.stringify(result.data.schedules));
+      ctxDispatch({ type: 'ADD_SCHEDULES', payload: result.data.schedules });
+
+      var scheduleIds = [];
+      result.data.removedSchedules.map((schd) => {
+        scheduleIds.push(schd._id);
+      });
+
+      scheduleIds &&
+        (await Axios.put(
+          `/api/booking/admin/delete`,
+          {
+            scheduleIds,
+          },
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        ));
+
+      const airlines = await Axios.put(
+        `/api/airlines/admin/delete/${airlinesId}`,
+        {
+          flightCode,
+        },
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+
+      localStorage.setItem('airlines', JSON.stringify(airlines.data));
+      ctxDispatch({ type: 'ADD_AIRLINES', payload: airlines.data });
+
+      const { data } = await Axios.get(
+        `/api/flights/admin/delete/${flightId}`,
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+
+      localStorage.setItem('flights', JSON.stringify(data));
+      ctxDispatch({ type: 'ADD_FLIGHTS', payload: data });
+
+      toast.success(flightName + ' removed successfully!');
       dispatch({ type: 'FETCH_SUCCESS' });
     } catch (err) {
       dispatch({ type: 'FETCH_FAILED' });
@@ -175,10 +265,17 @@ export default function Flights({ airline }) {
                     </Link>
                     <Link
                       to={`/dashboard/${flight._id}`}
-                      // onClick={() => deleteAirline(airline.name, airline._id)}
+                      onClick={() =>
+                        deleteFlights(
+                          flight._id,
+                          flight.name,
+                          flight.number,
+                          flight.airlineId
+                        )
+                      }
                       className="admin-add-button airport-card-delete-button"
                     >
-                      DELETE AIRLINES
+                      DELETE FLIGHTS
                     </Link>
                   </div>
                 </div>
@@ -284,7 +381,7 @@ export default function Flights({ airline }) {
                             </Link>
                             <Link
                               to={`/dashboard/${flight._id}`}
-                              // onClick={() => deleteAirline(airline.name, airline._id)}
+                              onClick={() => deleteSchedule(schedule._id)}
                               className="admin-add-button airport-card-delete-button"
                             >
                               DELETE

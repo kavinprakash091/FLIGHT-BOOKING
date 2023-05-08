@@ -52,6 +52,10 @@ flightRouter.put(
     await flight.save();
 
     const flights = await Flight.find({});
+    if (!flights) {
+      res.status(404).send({ message: 'No flights found!' });
+      return;
+    }
     res.send(flights);
     return;
   })
@@ -62,11 +66,57 @@ flightRouter.get(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     await Flight.findOneAndDelete({ _id: req.params.id });
-    const airlines = await Flight.find({});
-    res.send(airlines);
+    const flights = await Flight.find({});
+    if (!flights) {
+      res.status(404).send({ message: 'No flights found!' });
+      return;
+    }
+    res.send(flights);
     return;
   })
 );
+
+flightRouter.get(
+  '/admin/delete/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    await Flight.findOneAndDelete({ _id: req.params.id });
+    const flights = await Flight.find({});
+    if (!flights) {
+      res.status(404).send({ message: 'No flights found!' });
+      return;
+    }
+    res.send(flights);
+    return;
+  })
+);
+
+flightRouter.get(
+  '/admin/airline/delete/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const removed = await Flight.find({ airlineId: req.params.id });
+    await Flight.deleteMany({ airlineId: req.params.id });
+    const flights = await Flight.find({});
+    if (!flights) {
+      res.status(404).send({ message: 'No flights found!' });
+      return;
+    }
+    res.send({ removedFlights: removed, flights: flights });
+    return;
+  })
+);
+
+// flightRouter.get(
+//   '/admin/delete/:id',
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {
+//     await Flight.findOneAndDelete({ _id: req.params.id });
+//     const airlines = await Flight.find({});
+//     res.send(airlines);
+//     return;
+//   })
+// );
 
 // flightRouter.put(
 //   '/update/:id',

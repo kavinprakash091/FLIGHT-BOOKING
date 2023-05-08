@@ -12,6 +12,7 @@ airlinesRouter.get(
     const airlines = await Airlines.find({});
     if (!airlines) {
       res.status(404).send({ message: 'No airlines found!' });
+      return;
     }
     res.send(airlines);
     return;
@@ -28,6 +29,10 @@ airlinesRouter.put(
     await airline.save();
 
     const airlines = await Airlines.find({});
+    if (!airlines) {
+      res.status(404).send({ message: 'No airlines found!' });
+      return;
+    }
     res.send(airlines);
     return;
   })
@@ -39,6 +44,43 @@ airlinesRouter.get(
   expressAsyncHandler(async (req, res) => {
     await Airlines.findOneAndDelete({ _id: req.params.id });
     const airlines = await Airlines.find({});
+    if (!airlines) {
+      res.status(404).send({ message: 'No airlines found!' });
+      return;
+    }
+    res.send(airlines);
+    return;
+  })
+);
+
+airlinesRouter.put(
+  '/admin/delete/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    await Airlines.updateOne(
+      { _id: req.params.id },
+      { $pull: { flights: req.body.flightCode } }
+    );
+    const airlines = await Airlines.find({});
+    if (!airlines) {
+      res.status(404).send({ message: 'No airlines found!' });
+      return;
+    }
+    res.send(airlines);
+    return;
+  })
+);
+
+airlinesRouter.get(
+  '/admin/delete/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    await Airlines.findOneAndDelete({ _id: req.params.id });
+    const airlines = await Airlines.find({});
+    if (!airlines) {
+      res.status(404).send({ message: 'No airlines found!' });
+      return;
+    }
     res.send(airlines);
     return;
   })

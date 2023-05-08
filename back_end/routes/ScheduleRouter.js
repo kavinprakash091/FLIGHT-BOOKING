@@ -1,8 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../Utils.js';
-import Flight from '../models/FlightsModel.js';
-import Airlines from '../models/AirlinesModel.js';
 import Schedule from '../models/ScheduleModel.js';
 
 const scheduleRouter = express.Router();
@@ -14,6 +12,7 @@ scheduleRouter.get(
     const schedules = await Schedule.find({});
     if (!schedules) {
       res.status(404).send({ message: 'No schedules found!' });
+      return;
     }
     res.send(schedules);
     return;
@@ -26,6 +25,7 @@ scheduleRouter.get(
     const schedules = await Schedule.find({});
     if (!schedules) {
       res.status(404).send({ message: 'No schedules found!' });
+      return;
     }
     res.send(schedules);
     return;
@@ -67,8 +67,51 @@ scheduleRouter.put(
     const schedules = await Schedule.find({});
     if (!schedules) {
       res.status(404).send({ message: 'No schedules found!' });
+      return;
     }
     res.send(schedules);
+    return;
+  })
+);
+
+scheduleRouter.put(
+  '/delete/:id',
+  expressAsyncHandler(async (req, res) => {
+    await Schedule.findOneAndDelete({ _id: req.params.id });
+    const schedules = await Schedule.find({});
+    if (!schedules) {
+      res.status(404).send({ message: 'No schedules found!' });
+      return;
+    }
+    res.send(schedules);
+    return;
+  })
+);
+
+scheduleRouter.put(
+  '/admin/delete/:id',
+  expressAsyncHandler(async (req, res) => {
+    const removed = await Schedule.find({ flightId: req.params.id });
+    await Schedule.deleteMany({
+      flightId: req.params.id,
+    });
+    const schedule = await Schedule.find({});
+    res.send({ removedSchedules: removed, schedules: schedule });
+    return;
+  })
+);
+
+scheduleRouter.put(
+  '/admin/airline/delete',
+  expressAsyncHandler(async (req, res) => {
+    const removed = await Schedule.find({
+      flightId: { $in: req.body.flightIds },
+    });
+    await Schedule.deleteMany({
+      flightId: { $in: req.body.flightIds },
+    });
+    const schedule = await Schedule.find({});
+    res.send({ removedSchedules: removed, schedules: schedule });
     return;
   })
 );

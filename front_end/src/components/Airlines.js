@@ -99,14 +99,71 @@ export default function Airlines() {
     }
   };
 
-  const deleteAirline = async (airlineName, airline) => {
+  const deleteAirline = async (airlineName, airlineId) => {
     try {
       dispatch({ type: 'FETCH_REQUEST' });
-      const { data } = await Axios.get(`/api/airlines/delete/${airline}`, {
-        headers: { authorization: `Bearer ${userDetails.token}` },
+      const flight = await Axios.get(
+        `/api/flights/admin/airline/delete/${airlineId}`,
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+
+      localStorage.setItem('flights', JSON.stringify(flight.data.flights));
+      ctxDispatch({ type: 'ADD_FLIGHTS', payload: flight.data.flights });
+
+      var flightIds = [];
+      flight.data.removedFlights.map((flt) => {
+        flightIds.push(flt._id);
       });
-      localStorage.setItem('airlines', JSON.stringify(data));
-      ctxDispatch({ type: 'ADD_AIRLINES', payload: data });
+
+      if (flightIds) {
+        const schedule = await Axios.put(
+          `/api/schedules/admin/airline/delete`,
+          {
+            flightIds,
+          },
+          {
+            headers: { authorization: `Bearer ${userDetails.token}` },
+          }
+        );
+
+        localStorage.setItem(
+          'schedules',
+          JSON.stringify(schedule.data.schedules)
+        );
+        ctxDispatch({
+          type: 'ADD_SCHEDULES',
+          payload: schedule.data.schedules,
+        });
+
+        var scheduleIds = [];
+        schedule.data.removedSchedules.map((sch) => {
+          scheduleIds.push(sch._id);
+        });
+
+        scheduleIds &&
+          (await Axios.put(
+            `/api/booking/admin/delete`,
+            {
+              scheduleIds,
+            },
+            {
+              headers: { authorization: `Bearer ${userDetails.token}` },
+            }
+          ));
+      }
+
+      const airlines = await Axios.get(
+        `/api/airlines/admin/delete/${airlineId}`,
+
+        {
+          headers: { authorization: `Bearer ${userDetails.token}` },
+        }
+      );
+
+      localStorage.setItem('airlines', JSON.stringify(airlines.data));
+      ctxDispatch({ type: 'ADD_AIRLINES', payload: airlines.data });
 
       toast.success(airlineName + ' removed successfully!');
       dispatch({ type: 'FETCH_SUCCESS' });
@@ -156,14 +213,16 @@ export default function Airlines() {
 
   return (
     <section className="airport-container">
-      {loading && <Loading />}
+      {' '}
+      {loading && <Loading />}{' '}
       <div className="airport-container-header">
-        <h3>AIRLINES</h3>
+        <h3> AIRLINES </h3>{' '}
         <button onClick={() => setFormOpen(1)} className="admin-add-button">
-          ADD AIRLINES
-        </button>
-      </div>
+          ADD AIRLINES{' '}
+        </button>{' '}
+      </div>{' '}
       <div className="airport-list-container">
+        {' '}
         {airlines &&
           airlines.map((airline, index) => (
             <div
@@ -178,34 +237,34 @@ export default function Airlines() {
                 <div className="airlines-image-container">
                   <div className="airlines-image">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh8i3TloHnlczFAInYtSYsFzhk-SQGL_E22A&usqp=CAU" />
-                  </div>
+                  </div>{' '}
                   <div>
-                    <h3>{airline.name}</h3>
+                    <h3> {airline.name} </h3>{' '}
                     <p>
+                      {' '}
                       {airline.flights.length}{' '}
-                      {airline.flights.length === 1 ? 'flight' : 'flights'}
-                    </p>
-                  </div>
-                </div>
+                      {airline.flights.length === 1 ? 'flight' : 'flights'}{' '}
+                    </p>{' '}
+                  </div>{' '}
+                </div>{' '}
                 <div className="airline-button-container">
                   <Link
                     to={`/dashboard/${airline._id}`}
                     onClick={() => setFormOpen(2)}
                     className="admin-add-button"
                   >
-                    ADD FLIGHTS
-                  </Link>
+                    ADD FLIGHTS{' '}
+                  </Link>{' '}
                   <Link
                     to={`/dashboard/${airline._id}`}
                     onClick={() => deleteAirline(airline.name, airline._id)}
                     className="admin-add-button airport-card-delete-button"
                   >
-                    DELETE AIRLINES
-                  </Link>
-                </div>
-              </div>
+                    DELETE AIRLINES{' '}
+                  </Link>{' '}
+                </div>{' '}
+              </div>{' '}
               <Flights airline={airline} />
-
               <h5
                 onClick={() => {
                   bigAirlines === index + 1
@@ -221,12 +280,11 @@ export default function Airlines() {
                       ? 'fa-solid fa-angle-up'
                       : 'fa-solid fa-angle-down'
                   }
-                ></i>
-              </h5>
+                ></i>{' '}
+              </h5>{' '}
             </div>
-          ))}
+          ))}{' '}
       </div>
-
       <form
         className={
           isFormOpen === 1
@@ -236,18 +294,18 @@ export default function Airlines() {
         onSubmit={addAirlinesHandler}
       >
         <div className="add-airport-form-header">
-          <h3>ADD AIRLINES</h3>
+          <h3> ADD AIRLINES </h3>{' '}
           <i
             onClick={() => {
               setFormOpen(0);
             }}
             className="fa-solid fa-xmark"
-          ></i>
-        </div>
+          ></i>{' '}
+        </div>{' '}
         <div className="input-fields">
           <label htmlFor="airlineName">
-            Airlines Name<span>*</span>
-          </label>
+            Airlines Name <span> * </span>{' '}
+          </label>{' '}
           <input
             type="text"
             id="airlineName"
@@ -256,17 +314,16 @@ export default function Airlines() {
             required
           />
         </div>
-
         <div className="airport-form-button-container">
           <button type="reset" className="airport-cancel-button">
-            CANCEL
-          </button>
+            CANCEL{' '}
+          </button>{' '}
           <button type="submit" className="airport-add-button">
-            {isUpdate ? 'SAVE' : 'ADD'}
-          </button>
-        </div>
+            {' '}
+            {isUpdate ? 'SAVE' : 'ADD'}{' '}
+          </button>{' '}
+        </div>{' '}
       </form>
-
       <form
         className={
           isFormOpen === 2
@@ -276,19 +333,18 @@ export default function Airlines() {
         onSubmit={addFlightHandler}
       >
         <div className="add-airport-form-header">
-          <h3>ADD FLIGHTS</h3>
+          <h3> ADD FLIGHTS </h3>{' '}
           <i
             onClick={() => {
               setFormOpen(0);
             }}
             className="fa-solid fa-xmark"
-          ></i>
+          ></i>{' '}
         </div>
-
         <div className="input-fields">
           <label htmlFor="flightNumber">
-            Flight Number<span>*</span>
-          </label>
+            Flight Number <span> * </span>{' '}
+          </label>{' '}
           <input
             type="text"
             id="flightNumber"
@@ -297,11 +353,10 @@ export default function Airlines() {
             required
           />
         </div>
-
         <div className="input-fields">
           <label htmlFor="flightName">
-            Flight Name<span>*</span>
-          </label>
+            Flight Name <span> * </span>{' '}
+          </label>{' '}
           <input
             type="text"
             id="flightName"
@@ -310,31 +365,29 @@ export default function Airlines() {
             required
           />
         </div>
-
         <div className="input-fields">
           <label htmlFor="flightCategory">
-            Flight Category<span>*</span>
-          </label>
+            Flight Category <span> * </span>{' '}
+          </label>{' '}
           <select
             id="flightCategory"
             value={flightCategory}
             onChange={(e) => setFlightCategory(e.target.value)}
           >
-            <option></option>
-            <option value="Domestic">Domestic</option>
-            <option value="International">International</option>
-          </select>
+            <option> </option> <option value="Domestic"> Domestic </option>{' '}
+            <option value="International"> International </option>{' '}
+          </select>{' '}
         </div>
-
         <div className="airport-form-button-container">
           <button type="reset" className="airport-cancel-button">
-            CANCEL
-          </button>
+            CANCEL{' '}
+          </button>{' '}
           <button type="submit" className="airport-add-button">
-            {isUpdate ? 'SAVE' : 'ADD'}
-          </button>
-        </div>
-      </form>
+            {' '}
+            {isUpdate ? 'SAVE' : 'ADD'}{' '}
+          </button>{' '}
+        </div>{' '}
+      </form>{' '}
     </section>
   );
 }

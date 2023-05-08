@@ -1,8 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../Utils.js';
-import Flight from '../models/FlightsModel.js';
-import Airlines from '../models/AirlinesModel.js';
 import Booking from '../models/BookingModel.js';
 
 const bookingRouter = express.Router();
@@ -14,6 +12,7 @@ bookingRouter.get(
     const bookings = await Booking.find({ userId: req.params.id });
     if (!bookings) {
       res.status(404).send({ message: 'No bookings found!' });
+      return;
     }
     res.send(bookings);
     return;
@@ -28,7 +27,28 @@ bookingRouter.put(
     const bookings = await Booking.find({ userId: req.params.id });
     if (!bookings) {
       res.status(404).send({ message: 'No bookings found!' });
+      return;
     }
+    res.send(bookings);
+    return;
+  })
+);
+
+bookingRouter.get(
+  '/admin/delete/:id',
+  expressAsyncHandler(async (req, res) => {
+    const bookings = await Booking.deleteMany({ scheduleId: req.params.id });
+    res.send(bookings);
+    return;
+  })
+);
+
+bookingRouter.put(
+  '/admin/delete',
+  expressAsyncHandler(async (req, res) => {
+    const bookings = await Booking.deleteMany({
+      scheduleId: { $in: req.body.scheduleIds },
+    });
     res.send(bookings);
     return;
   })
