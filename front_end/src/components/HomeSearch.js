@@ -85,6 +85,7 @@ export default function HomeSearch() {
             id="departureAirport"
             value={departureAirport}
             onChange={(e) => setDepartureAirport(e.target.value)}
+            required
           >
             <option> </option>{' '}
             {airports &&
@@ -103,6 +104,7 @@ export default function HomeSearch() {
             id="arrivalAirport"
             value={arrivalAirport}
             onChange={(e) => setArrivalAirport(e.target.value)}
+            required
           >
             <option> </option>{' '}
             {airports &&
@@ -121,6 +123,7 @@ export default function HomeSearch() {
             id="departureTimet"
             value={searchDate}
             onChange={(e) => setSearchDate(e.target.value)}
+            required
           />{' '}
         </div>{' '}
         <button type="submit" className="booking-search-button">
