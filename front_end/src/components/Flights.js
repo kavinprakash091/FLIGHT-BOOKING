@@ -95,6 +95,10 @@ export default function Flights({ airline }) {
   const addScheduleHandler = async (e) => {
     e.preventDefault();
     setFormOpen(false);
+    if(new Date(departureDate) < new Date()) {
+      toast.error("Please check the date!");
+      return;
+    }
     try {
       dispatch({ type: 'FETCH_REQUEST' });
       const seats = [
